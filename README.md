@@ -1,6 +1,6 @@
 # hslu-pren-32
 
-## Installation
+## Installation (OS, WLAN, SSH)
 - Use PI Imager https://www.raspberrypi.org/software/ to install latest OS
 
 - Create wpa_supplicant.conf file on sd card
@@ -20,7 +20,19 @@ network={
 
 >ssh pi@192.168.x.x
 
-password is raspberry
+default password is `raspberry`
 
+change password of user pi with `passwd` to rpPREN32
 
+## Setup VSCode
+- Install recomendended extensions locally. Type `@recommended` in extensions search bar.
+- Add new SSH Target in Remote Explorer and use `ssh pi@192.168.x.x`
+- Connect to in new Window and log in with `rpPREN32`
+
+## Install Software
+ pi@raspberrypi:~ $ `git clone https://github.com/jonas99y/hslu-pren-32.git`
+
+ pi@raspberrypi:~ $ `sudo chmod +x ./hslu-pren-32/install.sh`
+
+ pi@raspberrypi:~ $ `./hslu-pren-32/install.sh`
 
