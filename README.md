@@ -12,7 +12,7 @@ country=CH
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 network={
     ssid="100GHz 5G Testing Antenna"
-    psk="70794440629274328194"
+    psk="XXXXXXXXXXX"
     key_mgmt=WPA-PSK
 }
 ```
