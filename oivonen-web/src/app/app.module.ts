@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RemoteComponent } from './remote/remote.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { NgxGamepadModule } from 'ngx-gamepad';
 
 const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
 
@@ -16,7 +17,8 @@ const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    NgxGamepadModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

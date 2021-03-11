@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RemoteServiceService } from './remote-service.service';
+import { RemoteControlService } from './remote-control.service';
 
-describe('RemoteServiceService', () => {
-  let service: RemoteServiceService;
+describe('RemoteControlService', () => {
+  let service: RemoteControlService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RemoteServiceService);
+    service = TestBed.inject(RemoteControlService);
   });
 
   it('should be created', () => {
