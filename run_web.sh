@@ -1,2 +1,2 @@
 eval cd oivonen-web
-eval ng serve
+eval ng serve --no-live-reload
