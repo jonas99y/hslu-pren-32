@@ -9,7 +9,10 @@
             "type": "python",
             "request": "launch",
             "program": "${cwd}/src/remote/app.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "src/"
+            }
         }
     ]
 }
