@@ -20,12 +20,12 @@ eval pip3 install -r hslu-pren-32/src/requirements.txt
 
 eval curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 eval sudo apt install nodejs
-eval npm install -g @angular/cli
+eval sudo npm install -g @angular/cli
 eval cd oivonen-web
 eval npm install
 eval cd ..
-
-eval chmod +x ./run.sh
-eval chmod +x ./run_web.sh
-eval chmod +x ./run_remote_server.sh
+eval ch 
+eval chmod +x ./hslu-pren-32/run.sh
+eval chmod +x ./hslu-pren-32/run_web.sh
+eval chmod +x ./hslu-pren-32/run_remote_server.sh
 eval apt install parallel
