@@ -1,5 +1,22 @@
 # hslu-pren-32
 
+## Run
+pi@raspberrypi:~/hslu-pren-32 $ `./run.sh`
+
+or in seperate terminals:
+
+- pi@raspberrypi:~/hslu-pren-32 $ `./run_web.sh`
+
+- pi@raspberrypi:~/hslu-pren-32 $ `./run_remote_server.sh`
+
+or in seperate terminals:
+- pi@raspberrypi:~/hslu-pren-32/oivonen_web $ `ng serve`
+- pi@raspberrypi:~/hslu-pren-32/src $ `python remote/app.py`
+
+
+
+
+
 ## Installation (OS, WLAN, SSH)
 - Use PI Imager https://www.raspberrypi.org/software/ to install latest OS
 

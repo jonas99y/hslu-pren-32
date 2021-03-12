@@ -9,3 +9,23 @@ eval sudo make altinstall
 eval echo "alias python3=python3.9" >> ~/.bashrc
 eval echo "alias pip3=pip3.9" >> ~/.bashrc
 eval source ~/.bashrc
+eval cd ..
+eval apt install libssl-dev libncurses5-dev libsqlite3-dev libreadline-dev libtk8.5 libgdm-dev libdb4o-cil-dev libpcap-dev
+eval cd Python-3.9.2
+eval ./configure
+eval make
+eval make install
+eval cd ..
+eval pip3 install -r hslu-pren-32/src/requirements.txt
+
+eval curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+eval sudo apt install nodejs
+eval npm install -g @angular/cli
+eval cd oivonen-web
+eval npm install
+eval cd ..
+
+eval chmod +x ./run.sh
+eval chmod +x ./run_web.sh
+eval chmod +x ./run_remote_server.sh
+eval apt install parallel

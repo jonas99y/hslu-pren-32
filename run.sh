@@ -1,0 +1,1 @@
+parallel --colsep , ./run_web.sh :::: ./run_remote_server.sh
