@@ -16,10 +16,12 @@ class Motor():
 
     def forward(self):
         GPIO.output(self._forward, GPIO.HIGH)
+        GPIO.output(self._backward, GPIO.LOW)
         
 
     def backwards(self):
         GPIO.output(self._backward, GPIO.HIGH)
+        GPIO.output(self._forward, GPIO.LOW)
 
 
     def stop(self):

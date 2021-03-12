@@ -24,7 +24,6 @@ eval sudo npm install -g @angular/cli
 eval cd oivonen-web
 eval npm install
 eval cd ..
-eval ch 
 eval chmod +x ./hslu-pren-32/run.sh
 eval chmod +x ./hslu-pren-32/run_web.sh
 eval chmod +x ./hslu-pren-32/run_remote_server.sh
