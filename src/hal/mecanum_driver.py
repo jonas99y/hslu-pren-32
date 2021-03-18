@@ -19,6 +19,10 @@ class MecanumDriver():
         self._pwm = pwm
     
     def drive(self, direction:Direction):
+        self._lf.stop()
+        self._lb.stop()
+        self._rf.stop()
+        self._rb.stop()
         if direction == Direction.forward:
             self._lf.forward()
             self._lb.forward()
