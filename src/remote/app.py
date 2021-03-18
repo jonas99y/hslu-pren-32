@@ -10,6 +10,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 switch.init()
 @socketio.on('drive')
 def handle_drive_instruction(data:Dict):
+    pass
     # print('Drive')
     # print(data)
     # if 'direction' in data.keys():
