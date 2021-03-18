@@ -1,5 +1,5 @@
 from time import time
-from pin import Pin
+from hal.pin import Pin
 import RPi.GPIO as GPIO
 import time
 
