@@ -7,9 +7,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+switch.init()
 @socketio.on('drive')
 def handle_drive_instruction(data:Dict):
-    switch.init()
     # print('Drive')
     # print(data)
     # if 'direction' in data.keys():
