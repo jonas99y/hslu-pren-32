@@ -34,11 +34,13 @@ class MecanumDriver():
             self._lb.backwards()
             self._rf.backwards()
             self._rb.backwards()
+            print("Driving backward")
         elif direction == Direction.right:
             self._lf.forward()
             self._lb.backwards()
             self._rf.backwards()
             self._rb.forward()
+            print("Driving right")
         elif direction == Direction.left:
             self._lf.backwards()
             self._lb.forward()
@@ -51,6 +53,7 @@ class MecanumDriver():
         self._lb.stop()
         self._rf.stop()
         self._rb.stop()
+        print("Stopping")
 
 
     def increaseSpeed(self):
