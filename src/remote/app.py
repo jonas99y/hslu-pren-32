@@ -19,7 +19,6 @@ def handle_drive_instruction(data:Dict):
         else:
             driver.drive(direction)
 
-    driver.drive()
 
 if __name__ == '__main__':
     socketio.run(app, port=8988)
