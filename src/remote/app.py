@@ -1,6 +1,6 @@
 from typing import Dict
 from flask import Flask, render_template
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 from config.device_config import driver, switch
 
 app = Flask(__name__)
@@ -18,6 +18,7 @@ def handle_drive_instruction(data:Dict):
             driver.stop()
         else:
             driver.drive(direction)
+
 
 
 if __name__ == '__main__':

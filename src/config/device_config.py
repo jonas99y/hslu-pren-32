@@ -2,6 +2,7 @@
 from hal.mecanum_driver import MecanumDriver
 from hal.motor import Motor
 from hal.pwm import Pwm
+from hal.lift_driver import LiftDriver
 from config.pins import *
 import RPi.GPIO as GPIO
 
@@ -15,5 +16,8 @@ rf = Motor(MOTOR_FRONT_RIGHT_PLUS, MOTOR_FRONT_RIGHT_MINUS)
 rb = Motor(MOTOR_BACK_RIGHT_PLUS, MOTOR_BACK_RIGHT_MINUS)
 pwm = Pwm(PWM_DRIVE, 40)
 driver = MecanumDriver(lf,lb,rf,rb,pwm)
+
+liftMotor = Motor()
+liftDriver = LiftDriver()
 
 switch = Switch(SWITCH_LIFT)
