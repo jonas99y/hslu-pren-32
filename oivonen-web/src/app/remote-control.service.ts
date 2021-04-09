@@ -10,7 +10,12 @@ export class RemoteControlService {
   constructor(private socket: Socket) { }
 
   sendDriveCommand(data: DriveInstructions) {
+    console.log(data)
     this.socket.emit("drive", data);
+  }
+
+  sendSpeedCommand(speedDelta:number){
+    this.socket.emit("speed", speedDelta)
   }
 
   sendMessage(msg: string) {

@@ -48,6 +48,28 @@ export class RemoteComponent implements OnInit {
 
         });
 
+        this.gamepad.after('button7') // R2
+        .subscribe(() => {
+          this.remoteController.sendDriveCommand({ speed: 10, direction: 5 });
+
+        });
+
+        this.gamepad.after('button6') // L2
+        .subscribe(() => {
+          this.remoteController.sendDriveCommand({ speed: 10, direction: 6 });
+
+        });
+        this.gamepad.after('button4') // L1
+        .subscribe(() => {
+          this.remoteController.sendSpeedCommand(10);
+
+        });
+        this.gamepad.after('button5') // R1
+        .subscribe(() => {
+          this.remoteController.sendSpeedCommand(-10);
+
+        });
+
 
       })
   }
