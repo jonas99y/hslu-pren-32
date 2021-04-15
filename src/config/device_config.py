@@ -17,7 +17,8 @@ rb = Motor(MOTOR_BACK_RIGHT_PLUS, MOTOR_BACK_RIGHT_MINUS)
 pwm = Pwm(PWM_DRIVE, 40)
 driver = MecanumDriver(lf,lb,rf,rb,pwm)
 
-liftMotor = Motor()
-liftDriver = LiftDriver()
+liftMotor = Motor(LIFT_PLUS, LIFT_MINUS)
+liftPwm = Pwm(PWM_LIFT, 40)
+liftDriver = LiftDriver(liftMotor, liftPwm)
 
 switch = Switch(SWITCH_LIFT)
