@@ -2,6 +2,7 @@ from typing import Dict
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from config.device_config import driver, switch, liftDriver
+from hal.led_driver import LedDriver, Piktogram
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -17,6 +18,13 @@ def handle_drive_instruction(data:Dict):
         if direction == 0:
             driver.stop()
             liftDriver.stop()
+            #test led_driver
+            LedDriver.ledSet(Piktogram.hammer)
+            LedDriver.ledSet(Piktogram.taco)
+            LedDriver.ledSet(Piktogram.bucket)
+            LedDriver.ledSet(Piktogram.pencile)
+            LedDriver.ledSet(Piktogram.ruler)
+            LedDriver.ledSet(Piktogram.none)
         else:
             driver.drive(direction)
             liftDriver.drive(direction)

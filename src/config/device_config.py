@@ -1,4 +1,5 @@
 
+from hal.led import Led
 from hal.mecanum_driver import MecanumDriver
 from hal.motor import Motor
 from hal.pwm import Pwm
@@ -16,6 +17,10 @@ rf = Motor(MOTOR_FRONT_RIGHT_PLUS, MOTOR_FRONT_RIGHT_MINUS)
 rb = Motor(MOTOR_BACK_RIGHT_PLUS, MOTOR_BACK_RIGHT_MINUS)
 pwm = Pwm(PWM_DRIVE, 40)
 driver = MecanumDriver(lf,lb,rf,rb,pwm)
+
+ledA = Led(LED_A)
+ledB = Led(LED_B)
+ledC = Led(LED_C)
 
 liftMotor = Motor(LIFT_PLUS, LIFT_MINUS)
 liftPwm = Pwm(PWM_LIFT, 40)
