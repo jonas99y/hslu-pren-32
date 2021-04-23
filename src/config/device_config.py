@@ -21,4 +21,4 @@ liftMotor = Motor(LIFT_PLUS, LIFT_MINUS)
 liftPwm = Pwm(PWM_LIFT, 40)
 liftDriver = LiftDriver(liftMotor, liftPwm)
 
-switch = Switch(SWITCH_LIFT)
+switch = Switch(SWITCH_LIFT_UP)
