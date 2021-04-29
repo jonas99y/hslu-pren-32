@@ -8,13 +8,18 @@ import { GamepadService } from 'ngx-gamepad';
   styleUrls: ['./remote.component.scss']
 })
 export class RemoteComponent implements OnInit {
-
+  // address:string = 'http://localhost:8988'
 
   constructor(private remoteController: RemoteControlService, private gamepad: GamepadService) {
   }
 
   ngOnInit(): void {
     this.listenToGamepad();
+  }
+
+  public onAddressUpdateClick(address:string)
+  {
+    this.remoteController.setAddress(address);
   }
 
   private listenToGamepad() {
