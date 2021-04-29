@@ -53,3 +53,10 @@ change password of user pi with `passwd` to rpPREN32
 
  pi@raspberrypi:~ $ `./hslu-pren-32/install.sh`
 
+## Startup
+
+ pi@raspberrypi:~ $ `sudo crontab -e`
+ ```
+ @reboot /home/pi/hslu-pren-32/run_remote_server.sh &
+ ```
+

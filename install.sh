@@ -7,8 +7,6 @@ eval pip3 install -r hslu-pren-32/src/requirements.txt
 
 eval sudo apt install python3-tflite-runtime
 
-
-eval npm install hslu-pren-32/oivonen-web
 eval chmod +x hslu-pren-32/run.sh
 eval chmod +x hslu-pren-32/run_web.sh
 eval chmod +x hslu-pren-32/run_remote_server.sh
