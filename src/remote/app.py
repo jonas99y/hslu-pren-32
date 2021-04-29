@@ -36,4 +36,4 @@ def handle_speed_change(speed):
     driver.changeSpeed(speed)
 
 if __name__ == '__main__':
-    socketio.run(app, port=8988)
+    socketio.run(app, port=8988, host='0.0.0.0')
