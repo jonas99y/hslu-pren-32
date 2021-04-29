@@ -26,7 +26,7 @@ export class RemoteControlService {
 
   createSocket(address:string)
   {
-    return io(address, {host:"*"})
+    return io(address, {host:"*", secure:true})
   }
 
   setAddress(address: string) {
