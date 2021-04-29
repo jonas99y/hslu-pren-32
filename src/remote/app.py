@@ -3,7 +3,7 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from config.device_config import driver, switch, liftDriver
 from hal.led_driver import LedDriver, Piktogram
-
+from pathlib import Path
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -36,4 +36,4 @@ def handle_speed_change(speed):
     driver.changeSpeed(speed)
 
 if __name__ == '__main__':
-    socketio.run(app, port=8988)
+    socketio.run(app, port=8988, host='0.0.0.0', ssl_context=(str(Path(__file__).parent/'cert.pem'), str(Path(__file__).parent/'key.pem')))
