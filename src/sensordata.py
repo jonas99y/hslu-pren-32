@@ -1,24 +1,22 @@
 from pathlib import Path
 import time
+from typing import Dict
+import yaml
 src_dir = Path(__file__).parent
 
 file = src_dir / 'sensor'
 
 
-class SensorData():
-    def __init__(self, value:int) -> None:
-        self.value = value
 
-
-def write(data: SensorData):
+def write(data: Dict):
     with open(file, "w") as f:
-            f.write(str(data.value))
+        yaml.dump(data, f)
 
-def read() -> SensorData:
+def read() -> Dict:
     with open(file, "r") as f:
-        text = f.read()
-        if len(text) == 0:
+        data = yaml.load(f)
+        if not data:
             time.sleep(0.001)
             return read()
         else:
-            return text
+            return data

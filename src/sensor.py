@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import time
-import sensordata 
+import sensordata
 demofile = Path(__file__).parent / 'demofile.txt'
 
 
@@ -10,7 +10,7 @@ class Sensor():
         self.count = 0
 
     def cycle(self):
-        sensordata.write(sensordata.SensorData(self.count))
+        sensordata.write({'value': self.count})
         self.count += 1
 
 
