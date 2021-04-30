@@ -5,8 +5,8 @@ import yaml
 src_dir = Path(__file__).parent
 
 file = src_dir / 'sensor'
-
-
+if not file.exists():
+    open(file, 'w').close()
 
 def write(data: Dict):
     with open(file, "w") as f:
