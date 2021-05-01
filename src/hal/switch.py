@@ -12,15 +12,5 @@ class Switch():
         self._prevState = None
         GPIO.setup(self._pin, GPIO.IN)
 
-    def init(self):
-        self._isRunning = True
-        while self._isRunning:
-            print(self._pin)
-            # state = GPIO.input(self._pin)
-            # if self._prevState != state:
-            #     print(f'switch is {state}')
-            #     self._prevState = state
-            time.sleep(SLEEP)
-
-    def stop(self):
-        self._isRunning = False
+    def getState(self) -> bool():
+        return GPIO.input(self._pin)

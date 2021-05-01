@@ -1,21 +1,25 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import time
-import sensordata
-demofile = Path(__file__).parent / 'demofile.txt'
+from sensordata import SensorData
+from config.device_config import switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown
 
 
 class Sensor():
-    def __init__(self) -> None:
-        self.count = 0
+    def __init__(self, sensorData: SensorData):
+        self._sensorData = sensorData
 
     def cycle(self):
-        sensordata.write({'value': self.count})
-        self.count += 1
+        data = {}
+        data['switchFrontRight'] = switchFrontRight.getState()
+        data['switchFrontLeft'] = switchFrontLeft.getState()
+        data['switchLiftUp'] = switchLiftUp.getState()
+        data['switchLiftDown'] = switchLiftDown.getState()
+        self._sensorData.write(data)
 
 
 def main():
-    sensor = Sensor()
+    sensor = Sensor(SensorData(Path(__file__).parent/'sensor'))
     while True:
         sensor.cycle()
         time.sleep(0.01)

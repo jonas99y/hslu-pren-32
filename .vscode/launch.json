@@ -20,6 +20,26 @@
             "env": {
                 "PYTHONPATH": "src/"
             }
+        },
+        {
+            "name": "Sensor",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/sensor.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "src/"
+            }
+        },
+        {
+            "name": "App",
+            "type": "python",
+            "request": "launch",
+            "program": "${cwd}/src/app.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "src/"
+            }
         }
     ]
 }

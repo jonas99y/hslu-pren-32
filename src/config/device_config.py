@@ -1,5 +1,8 @@
 
+from pathlib import Path
+from drive.lift import Lift
 from hal.led import Led
+from hal.led_driver import LedDriver
 from hal.mecanum_driver import MecanumDriver
 from hal.motor import Motor
 from hal.pwm import Pwm
@@ -8,7 +11,8 @@ from config.pins import *
 import RPi.GPIO as GPIO
 
 from hal.switch import Switch
-
+from sensordata import SensorData
+from sensormonitor import SensorMonitor
 GPIO.setmode(GPIO.BCM)
 
 lf = Motor(MOTOR_FRONT_LEFT_PLUS, MOTOR_FRONT_LEFT_MINUS)
@@ -18,12 +22,24 @@ rb = Motor(MOTOR_BACK_RIGHT_PLUS, MOTOR_BACK_RIGHT_MINUS)
 pwm = Pwm(PWM_DRIVE, 40)
 driver = MecanumDriver(lf,lb,rf,rb,pwm)
 
-ledA = Led(LED_A)
-ledB = Led(LED_B)
-ledC = Led(LED_C)
+
 
 liftMotor = Motor(LIFT_PLUS, LIFT_MINUS)
 liftPwm = Pwm(PWM_LIFT, 40)
 liftDriver = LiftDriver(liftMotor, liftPwm)
 
 switch = Switch(SWITCH_LIFT_UP)
+
+switchFrontLeft = Switch(SWITCH_FRONT_LEFT)
+switchFrontRight = Switch(SWITCH_FRONT_RIGHT)
+switchLiftUp = Switch(SWITCH_LIFT_UP)
+switchLiftDown = Switch(SWITCH_LIFT_DOWN)
+
+ledA = Led(LED_A)
+ledB = Led(LED_B)
+ledC = Led(LED_C)
+ledDriver = LedDriver(ledA, ledB, ledC)
+
+src_dir = Path(__file__).parent.parent
+sensorMonitor = SensorMonitor(SensorData(src_dir / 'sensor'))
+lift = Lift(liftDriver, sensorMonitor)

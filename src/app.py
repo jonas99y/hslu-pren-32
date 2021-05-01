@@ -2,21 +2,24 @@
 from pathlib import Path
 import time
 from subprocess import Popen
-import sensordata
+from sensordata import SensorData
+from sensormonitor import SensorMonitor
+from config.device_config import lift, sensorMonitor
 src_dir = Path(__file__).parent
+import RPi.GPIO as GPIO
 
 def main():
     try:
         p= Popen(str(src_dir / 'sensor.py'))
+               
+        lift.climb()
         while True:
-            cycle()
-            time.sleep(0.01)
+            sensorMonitor.cycle()
     finally:
         p.kill()
+        GPIO.cleanup()
 
-def cycle():
-    data = sensordata.read()
-    print(data['value'])
+
 
 
 if __name__ == '__main__':

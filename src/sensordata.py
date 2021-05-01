@@ -4,19 +4,22 @@ from typing import Dict
 import yaml
 src_dir = Path(__file__).parent
 
-file = src_dir / 'sensor'
-if not file.exists():
-    open(file, 'w').close()
+class SensorData:
+    def __init__(self, file:Path):
+        self._file = file
+        if not self._file.exists():
+            open(self._file, 'w').close()
 
-def write(data: Dict):
-    with open(file, "w") as f:
-        yaml.dump(data, f)
+    def write(self, data: Dict):
+        with open(self._file, "w") as f:
+            yaml.safe_dump(data, f)
 
-def read() -> Dict:
-    with open(file, "r") as f:
-        data = yaml.load(f)
-        if not data:
-            time.sleep(0.001)
-            return read()
-        else:
-            return data
+    def read(self) -> Dict:
+        with open(self._file, "r") as f:
+            data = yaml.safe_load(f)
+            if not data:
+                time.sleep(0.001)
+                return self.read()
+            else:
+                return data
+
