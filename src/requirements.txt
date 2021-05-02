@@ -7,3 +7,4 @@ Pillow
 picamera
 ilock
 PyYAML
+pathfinding
