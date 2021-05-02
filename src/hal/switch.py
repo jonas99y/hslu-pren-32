@@ -12,5 +12,5 @@ class Switch():
         self._prevState = None
         GPIO.setup(self._pin, GPIO.IN)
 
-    def getState(self) -> bool():
+    def getState(self) -> bool:
         return GPIO.input(self._pin)

@@ -10,15 +10,15 @@ class SensorData:
         if not self._file.exists():
             open(self._file, 'w').close()
 
-    def write(self, data: Dict):
+    def write(self, data: Dict[str, any]):
         with open(self._file, "w") as f:
             yaml.safe_dump(data, f)
 
-    def read(self) -> Dict:
+    def read(self) -> Dict[str, any]:
         with open(self._file, "r") as f:
             data = yaml.safe_load(f)
             if not data:
-                time.sleep(0.001)
+                time.sleep(0.1)
                 return self.read()
             else:
                 return data

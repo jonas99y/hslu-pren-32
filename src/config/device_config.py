@@ -1,6 +1,7 @@
 
 from pathlib import Path
 from drive.lift import Lift
+from hal.distancesensor import DistanceSensor
 from hal.led import Led
 from hal.led_driver import LedDriver
 from hal.mecanum_driver import MecanumDriver
@@ -20,8 +21,7 @@ lb = Motor(MOTOR_BACK_LEFT_PLUS, MOTOR_BACK_LEFT_MINUS)
 rf = Motor(MOTOR_FRONT_RIGHT_PLUS, MOTOR_FRONT_RIGHT_MINUS)
 rb = Motor(MOTOR_BACK_RIGHT_PLUS, MOTOR_BACK_RIGHT_MINUS)
 pwm = Pwm(PWM_DRIVE, 40)
-driver = MecanumDriver(lf,lb,rf,rb,pwm)
-
+driver = MecanumDriver(lf, lb, rf, rb, pwm)
 
 
 liftMotor = Motor(LIFT_PLUS, LIFT_MINUS)
@@ -34,6 +34,11 @@ switchFrontLeft = Switch(SWITCH_FRONT_LEFT)
 switchFrontRight = Switch(SWITCH_FRONT_RIGHT)
 switchLiftUp = Switch(SWITCH_LIFT_UP)
 switchLiftDown = Switch(SWITCH_LIFT_DOWN)
+
+sensorFrontLeft = DistanceSensor(SENSOR_TIGGER, SENSOR_FRONT_LEFT)
+sensorFrontRight = DistanceSensor(SENSOR_TIGGER, SENSOR_FRONT_RIGHT)
+sensorSideLeft = DistanceSensor(SENSOR_TIGGER, SENSOR_SIDE_LEFT)
+sensorSideRight = DistanceSensor(SENSOR_TIGGER, SENSOR_SIDE_RIGHT)
 
 ledA = Led(LED_A)
 ledB = Led(LED_B)
