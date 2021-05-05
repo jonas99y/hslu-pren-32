@@ -38,7 +38,7 @@ class SensorMonitor:
                 callback(value)
 
 
-    def monitor(self, key: str, callback: Callable[[any],any]) -> Handle:
+    def monitor(self, key: str, callback: Callable[[any],None]) -> Handle:
         handle = MonitorHandle(self)
         self._monitors[handle] = (key, callback)
         data = self._sensorData.read()

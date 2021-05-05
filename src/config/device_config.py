@@ -12,6 +12,7 @@ from config.pins import *
 import RPi.GPIO as GPIO
 
 from hal.switch import Switch
+from sensor import Sensor
 from sensordata import SensorData
 from sensormonitor import SensorMonitor
 GPIO.setmode(GPIO.BCM)
@@ -45,6 +46,10 @@ ledB = Led(LED_B)
 ledC = Led(LED_C)
 ledDriver = LedDriver(ledA, ledB, ledC)
 
-src_dir = Path(__file__).parent.parent
-sensorMonitor = SensorMonitor(SensorData(src_dir / 'sensor'))
-lift = Lift(liftDriver, sensorMonitor)
+lift = Lift(liftDriver)
+sensorData = SensorData(Path(__file__).parent.parent/'sensor')
+sensor = Sensor(
+    sensorData,
+    switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown,
+    sensorFrontLeft, sensorFrontRight, sensorSideLeft, sensorSideRight,
+)

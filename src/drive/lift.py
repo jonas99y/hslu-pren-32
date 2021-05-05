@@ -1,29 +1,46 @@
 
+from typing import Dict
 from hal.lift_driver import LiftDriver, LiftDirection
+from sensordata import SensorData
 from sensormonitor import SensorMonitor
 
 
 class Lift:
-    def __init__(self, liftDriver: LiftDriver, monitor: SensorMonitor):
+    def __init__(self, liftDriver: LiftDriver):
         self._liftDriver = liftDriver
-        monitor.monitor('switchLiftUp', self._check_break_up)
-        monitor.monitor('switchLiftDown', self._check_break_down)
+        self._isClimbing = False
+        self._isRetracting = False
 
     def climb(self):
-        print('starting to climb')
-        self._liftDriver.drive(LiftDirection.down)
-
+        if self._isRetracting:
+            self._isRetracting = False
+        elif self._isClimbing:
+            print("already climbing")
+        else:
+            self._isClimbing = True
 
     def retract(self):
-        self._liftDriver.drive(LiftDirection.up)
+        if self._isClimbing:
+            self._isClimbing = False
+        elif self._isRetracting:
+            print("already retracting")
+        else:
+            self._isRetracting = True
+            
+    def cycle(self, sensorstate: Dict[str, float]):
+        if self._isClimbing:
+            if sensorstate[SensorData.switchLiftUp]:
+                self.stop()
+            else:
+                self._liftDriver.drive(LiftDirection.down)
+        elif self._isRetracting:
+            if sensorstate[SensorData.switchLiftDown]:
+                self.stop()
+            else:
+                self._liftDriver.drive(LiftDirection.up)
+        
 
-
-    def _check_break_up(self, value):
-        if value:
-            print('Break lifting up')
-            self._liftDriver.stop()
-
-    def _check_break_down(self, value):
-        if value:
-            print('Break lifting down')
-            self._liftDriver.stop()
+    def stop(self):
+        self._isClimbing = False
+        self._isRetracting = False
+        self._liftDriver.stop()
