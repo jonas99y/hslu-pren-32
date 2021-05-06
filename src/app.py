@@ -18,7 +18,7 @@ def main():
         # sensorData = SensorData(src_dir / 'sensor')
 
         lock = Lock()
-        watchdogThread = Thread(target = watchdog, args=lock)
+        watchdogThread = Thread(target = watchdog, args=(lock,))
         watchdogThread.start()
         climb = Climb(lift, driver)
         climb.start()
