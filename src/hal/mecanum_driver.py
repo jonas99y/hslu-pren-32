@@ -55,6 +55,8 @@ class MecanumDriver():
         self._rb.stop()
         print("Stopping")
 
+    def setSpeed(self, speed:int):
+        self._pwm.setSpeed(speed)
 
     def changeSpeed(self, speedDelta:int):
         self._pwm.setSpeed(self._pwm.getSpeed()+speedDelta)

@@ -9,7 +9,7 @@ class SensorData:
     sensorFrontRight  = "sensorFrontRight"
     sensorSideLeft  = "sensorSideLeft"
     sensorSideRight  = "sensorSideRight"
-    switchFrontLef = "switchFrontLef"
+    switchFrontLeft = "switchFrontLeft"
     switchFrontRight  = "switchFrontRight"
     switchLiftDown  = "switchLiftDown"
     switchLiftUp  = "switchLiftUp"

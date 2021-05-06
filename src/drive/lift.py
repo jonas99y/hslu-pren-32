@@ -6,10 +6,27 @@ from sensormonitor import SensorMonitor
 
 
 class Lift:
+    inbetween = 1
+    fullyRetracted = 2
+    climbed = 3
+
     def __init__(self, liftDriver: LiftDriver):
         self._liftDriver = liftDriver
         self._isClimbing = False
         self._isRetracting = False
+        self._state = Lift.inbetween
+
+    def get_state(self) -> float:
+        return self._state
+        pass
+
+    def update_state(self, sensorstate: Dict[str, float]):
+        if sensorstate[SensorData.switchLiftUp]:
+            self._state = Lift.climbed
+        elif sensorstate[SensorData.switchLiftDown]:
+            self._state = Lift.fullyRetracted
+        else:
+            self._state = inbetween
 
     def climb(self):
         if self._isRetracting:
@@ -26,19 +43,20 @@ class Lift:
             print("already retracting")
         else:
             self._isRetracting = True
-            
+
     def cycle(self, sensorstate: Dict[str, float]):
+        self.update_state(sensorstate)
+        state = self.get_state()
         if self._isClimbing:
-            if sensorstate[SensorData.switchLiftUp]:
+            if state == Lift.climbed:
                 self.stop()
             else:
                 self._liftDriver.drive(LiftDirection.down)
         elif self._isRetracting:
-            if sensorstate[SensorData.switchLiftDown]:
+            if state == Lift.fullyRetracted:
                 self.stop()
             else:
                 self._liftDriver.drive(LiftDirection.up)
-        
 
     def stop(self):
         self._isClimbing = False
