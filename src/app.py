@@ -16,8 +16,9 @@ def main():
     try:
         # p = Popen(str(src_dir / 'sensor.py'))
         # sensorData = SensorData(src_dir / 'sensor')
-
+        global lastSignOfLifeAt
         lock = Lock()
+        lastSignOfLifeAt = time.time()
         watchdogThread = Thread(target = watchdog, args=(lock,))
         watchdogThread.start()
         climb = Climb(lift, driver)
@@ -35,7 +36,7 @@ def main():
             if actualCycleLenght > WARN_IF_CYCLE_LONGER:
                 print(f'Cycle took {actualCycleLenght}')
             with lock:
-                global lastSignOfLifeAt
+                
                 lastSignOfLifeAt = time.time()
             time.sleep(CYCLE_LENGTH -actualCycleLenght)
 
