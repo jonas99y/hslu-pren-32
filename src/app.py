@@ -17,9 +17,9 @@ def main():
         # p = Popen(str(src_dir / 'sensor.py'))
         # sensorData = SensorData(src_dir / 'sensor')
 
+        lock = Lock()
         watchdogThread = Thread(target = watchdog, args=lock)
         watchdogThread.start()
-        lock = Lock()
         climb = Climb(lift)
         climb.start()
         cycleables = [climb]
@@ -41,7 +41,6 @@ def main():
 
             
     finally:
-        p.kill()
         GPIO.cleanup()
 
 WATCHDOG_TIMEOUT = 0.1
