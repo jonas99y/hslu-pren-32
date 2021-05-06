@@ -20,7 +20,7 @@ def main():
         lock = Lock()
         watchdogThread = Thread(target = watchdog, args=lock)
         watchdogThread.start()
-        climb = Climb(lift)
+        climb = Climb(lift, driver)
         climb.start()
         cycleables = [climb]
         while True:
