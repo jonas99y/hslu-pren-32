@@ -17,7 +17,7 @@ def main():
         # p = Popen(str(src_dir / 'sensor.py'))
         # sensorData = SensorData(src_dir / 'sensor')
 
-        watchdogThread = Thread(target = watchdog)
+        watchdogThread = Thread(target = watchdog, args=lock)
         watchdogThread.start()
         lock = Lock()
         climb = Climb(lift)
@@ -46,7 +46,7 @@ def main():
 
 WATCHDOG_TIMEOUT = 0.1
 MAX_TIME_WITH_NO_SIGN_OF_LIFE  = 0.5
-def watchdog():
+def watchdog(lock):
     while True:
         with lock:
             global lastSignOfLifeAt
