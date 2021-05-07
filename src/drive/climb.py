@@ -24,6 +24,7 @@ class Climb:
             return
         else:
             self._moveInProgress = True
+            self._climbInProgress = True
             self._lift.climb()
 
     def cycle(self, sensorstate: Dict[str, float]):
