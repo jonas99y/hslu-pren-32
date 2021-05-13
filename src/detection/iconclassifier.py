@@ -2,6 +2,8 @@ import tensorflow as tf
 import numpy as np
 import cv2
 import time
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 from videoStream import VideoStream
 
 class IconClassifier:
@@ -22,11 +24,17 @@ class IconClassifier:
         width = input_details[0]['shape'][2]
 
         # Initialize video stream
-        videostream = VideoStream(resolution=(self._resolutionWidth,self._resolutionHeight),framerate=30).start()
-        time.sleep(1)
-
+        #videostream = VideoStream(resolution=(self._resolutionWidth,self._resolutionHeight),framerate=30).start()
+        # time.sleep(1)
+        camera = PiCamera()
+        rawCapture = PiRGBArray(camera)
+        # allow the camera to warmup
+        time.sleep(0.1)
+        # grab an image from the camera
+        camera.capture(rawCapture, format="bgr")
+        image = rawCapture.array
         # Grab frame from video stream
-        frame1 = videostream.read()
+        frame1 = image
 
         # Crop frame
         frame = frame1[cropHeight:self._resolutionHeight, 0:self._resolutionWidth]
@@ -53,7 +61,7 @@ class IconClassifier:
         # print(f"the output is {output_data}")
         # print(f"{icon} detected")
 
-        videostream.stop()
+        # videostream.stop()
 
         return icon
 
