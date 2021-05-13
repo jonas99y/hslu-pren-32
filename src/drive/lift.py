@@ -26,7 +26,7 @@ class Lift:
         elif sensorstate[SensorData.switchLiftDown]:
             self._state = Lift.fullyRetracted
         else:
-            self._state = inbetween
+            self._state = Lift.inbetween
 
     def climb(self):
         if self._isRetracting:
