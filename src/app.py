@@ -11,7 +11,7 @@ src_dir = Path(__file__).parent
 from threading import Thread, Lock
 CYCLE_LENGTH = 0.1
 WARN_IF_CYCLE_LONGER = 0.05
-
+DEBUG = True
 def main():
     try:
         # p = Popen(str(src_dir / 'sensor.py'))
@@ -20,7 +20,8 @@ def main():
         lock = Lock()
         lastSignOfLifeAt = time.time()
         watchdogThread = Thread(target = watchdog, args=(lock,))
-        watchdogThread.start()
+        if not DEBUG:
+            watchdogThread.start()
         climb = Climb(lift, driver)
         climb.start()
         cycleables = [climb]
@@ -38,11 +39,16 @@ def main():
             with lock:
                 
                 lastSignOfLifeAt = time.time()
-            time.sleep(CYCLE_LENGTH -actualCycleLenght)
+            sleepTime = CYCLE_LENGTH -actualCycleLenght
+            if sleepTime< 0:
+                sleepTime = 0
+            time.sleep(sleepTime)
 
             
     finally:
+        stop_all()
         GPIO.cleanup()
+
 
 WATCHDOG_TIMEOUT = 0.1
 MAX_TIME_WITH_NO_SIGN_OF_LIFE  = 0.5
@@ -56,6 +62,9 @@ def watchdog(lock):
 
 def emergency_stop():
     print("emergency stop!")
+    stop_all()
+
+def stop_all():
     driver.stop()
     liftDriver.stop()
 

@@ -6,8 +6,8 @@ from hal.mecanum_driver import MecanumDriver, Direction
 from sensordata import SensorData
 import time
 
-MOVE_FORWARD_TIMESPAN = 2
-MOVE_FORWARD_SPEED = 30
+MOVE_FORWARD_TIMESPAN =1
+MOVE_FORWARD_SPEED = 20
 
 
 class Climb:
@@ -29,6 +29,7 @@ class Climb:
 
     def cycle(self, sensorstate: Dict[str, float]):
         if not self._moveInProgress:
+            self._driver.stop() # todo
             return # nothing to do here!
         liftstate = self._lift.get_state()
         if self._climbInProgress:
@@ -46,7 +47,7 @@ class Climb:
         self._lift.cycle(sensorstate)
 
     def _has_contact_at_front(self, sensorstate: Dict[str, float]):
-        return sensorstate[SensorData.switchFrontLeft] or sensorstate[SensorData.switchFrontRight]
+        return bool(sensorstate[SensorData.switchFrontLeft]) or bool(sensorstate[SensorData.switchFrontRight])
 
     def _initialize_move_forward(self):
         self._climbInProgress = False
