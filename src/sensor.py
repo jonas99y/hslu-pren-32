@@ -37,14 +37,10 @@ class Sensor():
 
     def read_sensors(self)->Dict[str, float]:
         data: Dict[str, Union[float]] = {}
-        data['switchFrontRight'] = float(self._switchFrontRight.getState())
-        data['switchFrontLeft'] = float(self._switchFrontLeft.getState())
-        data['switchLiftUp'] = float(self._switchLiftUp.getState())
-        data['switchLiftDown'] = float(self._switchLiftDown.getState())
-        data['sensorFrontLeft'] = float(self._sensorFrontLeft.read(samples=self._samples))
-        data['sensorFrontRight'] = float(self._sensorFrontRight.read(samples=self._samples))
-        data['sensorSideLeft'] = float(self._sensorSideLeft.read(samples=self._samples))
-        data['sensorSideRight'] = float(self._sensorSideRight.read(samples=self._samples))
+        data[SensorData.sensorFrontLeft] =0
+        data[SensorData.sensorFrontRight] = 0
+        data[SensorData.sensorSideLeft] = 0
+        data[SensorData.sensorSideRight] = self._sensorSideRight.read(samples=self._samples)
         return data
 
     def cycle(self):
