@@ -1,5 +1,7 @@
 
 from pathlib import Path
+
+from Bluetin_Echo.Bluetin_Echo import Echo
 from drive.lift import Lift
 from hal.distancesensor import DistanceSensor
 from hal.led import Led
@@ -36,10 +38,15 @@ switchFrontRight = Switch(SWITCH_FRONT_RIGHT)
 switchLiftUp = Switch(SWITCH_LIFT_UP)
 switchLiftDown = Switch(SWITCH_LIFT_DOWN)
 
-sensorFrontLeft = DistanceSensor(SENSOR_TIGGER, SENSOR_FRONT_LEFT)
-sensorFrontRight = DistanceSensor(SENSOR_TIGGER, SENSOR_FRONT_RIGHT)
-sensorSideLeft = DistanceSensor(SENSOR_TIGGER, SENSOR_SIDE_LEFT)
-sensorSideRight = DistanceSensor(SENSOR_TIGGER, SENSOR_SIDE_RIGHT)
+# sensorFrontLeft = DistanceSensor(SENSOR_TIGGER, SENSOR_FRONT_LEFT)
+# sensorFrontRight = DistanceSensor(SENSOR_TIGGER, SENSOR_FRONT_RIGHT)
+# sensorSideLeft = DistanceSensor(SENSOR_TIGGER, SENSOR_SIDE_LEFT)
+# sensorSideRight = DistanceSensor(SENSOR_TIGGER, SENSOR_SIDE_RIGHT)
+
+sensorFrontLeft = Echo(SENSOR_TIGGER, SENSOR_FRONT_LEFT)
+sensorFrontRight = Echo(SENSOR_TIGGER, SENSOR_FRONT_RIGHT)
+sensorSideLeft = Echo(SENSOR_TIGGER, SENSOR_SIDE_LEFT)
+sensorSideRight = Echo(SENSOR_TIGGER, SENSOR_SIDE_RIGHT)
 
 ledA = Led(LED_A)
 ledB = Led(LED_B)

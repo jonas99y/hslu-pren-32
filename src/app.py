@@ -23,7 +23,7 @@ def main():
         if not DEBUG:
             watchdogThread.start()
         climb = Climb(lift, driver)
-        climb.start()
+        # climb.start()
         cycleables = [climb]
         while True:
             start = time.time()

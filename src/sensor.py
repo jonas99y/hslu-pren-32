@@ -5,7 +5,7 @@ from typing import Dict, Union
 from hal.distancesensor import DistanceSensor
 from hal.switch import Switch
 from sensordata import SensorData
-
+from Bluetin_Echo import Echo
 
 class Sensor():
 
@@ -15,10 +15,11 @@ class Sensor():
                  switchFrontLeft: Switch,
                  switchLiftUp: Switch,
                  switchLiftDown: Switch,
-                 sensorFrontLeft: DistanceSensor,
-                 sensorFrontRight: DistanceSensor,
-                 sensorSideLeft: DistanceSensor,
-                 sensorSideRight: DistanceSensor,
+                 sensorFrontLeft: Echo,
+                 sensorFrontRight: Echo,
+                 sensorSideLeft: Echo,
+                 sensorSideRight: Echo,
+                 samples = 1
                  ):
         self._sensorData = sensorData
         self._switchFrontRight = switchFrontRight
@@ -29,6 +30,7 @@ class Sensor():
         self._sensorFrontRight = sensorFrontRight
         self._sensorSideLeft = sensorSideLeft
         self._sensorSideRight = sensorSideRight
+        self._samples = samples
 
     def write_values(self, data):
         self._sensorData.write(data)    
@@ -39,10 +41,10 @@ class Sensor():
         data['switchFrontLeft'] = float(self._switchFrontLeft.getState())
         data['switchLiftUp'] = float(self._switchLiftUp.getState())
         data['switchLiftDown'] = float(self._switchLiftDown.getState())
-        data['sensorFrontLeft'] = self._sensorFrontLeft.measure()
-        data['sensorFrontRight'] = self._sensorFrontRight.measure()
-        data['sensorSideLeft'] = self._sensorSideLeft.measure()
-        data['sensorSideRight'] = self._sensorSideRight.measure()
+        data['sensorFrontLeft'] = float(self._sensorFrontLeft.read(samples=self._samples))
+        data['sensorFrontRight'] = float(self._sensorFrontRight.read(samples=self._samples))
+        data['sensorSideLeft'] = float(self._sensorSideLeft.read(samples=self._samples))
+        data['sensorSideRight'] = float(self._sensorSideRight.read(samples=self._samples))
         return data
 
     def cycle(self):
@@ -51,19 +53,3 @@ class Sensor():
         self.write_values(data)
         end = time.time()
         print(f'sensor cycle took {end-start}')
-
-
-# def main():
-#     sensor = Sensor(
-#         SensorData(Path(__file__).parent/'sensor'),
-#         switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown,
-#         sensorFrontLeft, sensorFrontRight, sensorSideLeft, sensorSideRight,
-
-#     )
-#     while True:
-#         sensor.cycle()
-#         time.sleep(0.5)
-
-
-if __name__ == '__main__':
-    main()

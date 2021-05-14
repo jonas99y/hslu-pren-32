@@ -11,3 +11,4 @@ pathfinding
 tensorflow==2.0.0
 opencv-python
 h5py==2.9.0
+Bluetin_Echo
