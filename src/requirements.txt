@@ -2,9 +2,12 @@ wheel
 flask
 flask-socketio
 RPi.GPIO
-numpy
+numpy==1.19.5
 Pillow
 picamera
 ilock
 PyYAML
 pathfinding
+tensorflow==2.0.0
+opencv-python
+h5py==2.9.0

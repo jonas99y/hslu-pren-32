@@ -5,6 +5,8 @@ import time
 from threading import Thread
 from pathlib import Path
 from videoStream import VideoStream
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 from obstacledetectiondata import ObstacleDetectionData
 
 class ObstacleDetector:
@@ -27,16 +29,26 @@ class ObstacleDetector:
         width = input_details[0]['shape'][2]
 
         # Initialize video stream
-        videostream = VideoStream(resolution=(self._resolutionWidth,self._resolutionHeight),framerate=30).start()
-        time.sleep(1)
+        # videostream = VideoStream(resolution=(self._resolutionWidth,self._resolutionHeight),framerate=30).start()
+        # time.sleep(1)
+
+        camera = PiCamera()
+        camera.resolution = (640, 480)
+        rawCapture = PiRGBArray(camera, size=(640, 480))
+        # allow the camera to warmup
+        time.sleep(0.1)
+
 
         cycle = 0
         #for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
         while self.detecting:
 
             cycle += 1
+            # grab an image from the camera
+            camera.capture(rawCapture, format="bgr")
+            image = rawCapture.array
             # Grab frame from video stream
-            frame1 = videostream.read()
+            frame1 = image
 
             # Acquire frame and resize to expected shape [1xHxWx3]
             frame = frame1.copy()
@@ -74,11 +86,12 @@ class ObstacleDetector:
 
                     data['detected obstacles'].append(obstacleData)
 
-            self._obstacleDetectionData.write(data)
+            # self._obstacleDetectionData.write(data)
+            print(data)
 
         # Clean up
         cv2.destroyAllWindows()
-        videostream.stop()
+        # videostream.stop()
 
     def stopDetection(self):
         self._detecting = False
@@ -91,7 +104,7 @@ def main():
     modelPath = 'pren2_team32_obstacles_model_2.tflite'
 
     detector = ObstacleDetector(ObstacleDetectionData((Path(__file__).parent/'obstacles')), minConfidenceThreshold=min_conf_threshold, resolutionHeight=imH, resolutionWidth=imW)
-    detector.startDetection(labelsPath=labelsPath, modelPath=modelPath)
+    detector.startDetection(modelPath=modelPath)
 
     time.sleep(5)
 
