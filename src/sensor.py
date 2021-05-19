@@ -19,7 +19,8 @@ class Sensor():
                  sensorFrontRight: Echo,
                  sensorSideLeft: Echo,
                  sensorSideRight: Echo,
-                 samples = 1
+                 switchStart: Switch,
+                 samples = 5
                  ):
         self._sensorData = sensorData
         self._switchFrontRight = switchFrontRight
@@ -30,6 +31,7 @@ class Sensor():
         self._sensorFrontRight = sensorFrontRight
         self._sensorSideLeft = sensorSideLeft
         self._sensorSideRight = sensorSideRight
+        self._switchStart = switchStart
         self._samples = samples
 
     def write_values(self, data):
@@ -37,10 +39,15 @@ class Sensor():
 
     def read_sensors(self)->Dict[str, float]:
         data: Dict[str, Union[float]] = {}
-        data[SensorData.sensorFrontLeft] =0
-        data[SensorData.sensorFrontRight] = 0
-        data[SensorData.sensorSideLeft] = 0
+        data[SensorData.switchFrontRight] = float(self._switchFrontRight.getState())
+        data[SensorData.switchFrontLeft] = float(self._switchFrontLeft.getState())
+        data[SensorData.switchLiftUp] = float(self._switchLiftUp.getState())
+        data[SensorData.switchLiftDown] = float(self._switchLiftDown.getState())
+        data[SensorData.sensorFrontLeft] =self._sensorFrontLeft.read(samples=self._samples)
+        data[SensorData.sensorFrontRight] = self._sensorFrontRight.read(samples=self._samples)
+        data[SensorData.sensorSideLeft] = self._sensorSideLeft.read(samples=self._samples)
         data[SensorData.sensorSideRight] = self._sensorSideRight.read(samples=self._samples)
+        data[SensorData.switchStart] = float(self._switchStart.getState())
         return data
 
     def cycle(self):

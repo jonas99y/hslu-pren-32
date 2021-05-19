@@ -37,7 +37,7 @@ switchFrontLeft = Switch(SWITCH_FRONT_LEFT)
 switchFrontRight = Switch(SWITCH_FRONT_RIGHT)
 switchLiftUp = Switch(SWITCH_LIFT_UP)
 switchLiftDown = Switch(SWITCH_LIFT_DOWN)
-
+switchStart = Switch(SWITCH_START)
 # sensorFrontLeft = DistanceSensor(SENSOR_TIGGER, SENSOR_FRONT_LEFT)
 # sensorFrontRight = DistanceSensor(SENSOR_TIGGER, SENSOR_FRONT_RIGHT)
 # sensorSideLeft = DistanceSensor(SENSOR_TIGGER, SENSOR_SIDE_LEFT)
@@ -59,4 +59,5 @@ sensor = Sensor(
     sensorData,
     switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown,
     sensorFrontLeft, sensorFrontRight, sensorSideLeft, sensorSideRight,
+    switchStart
 )

@@ -13,6 +13,7 @@ class SensorData:
     switchFrontRight  = "switchFrontRight"
     switchLiftDown  = "switchLiftDown"
     switchLiftUp  = "switchLiftUp"
+    switchStart = "switchStart"
 
     def __init__(self, file:Path):
         self._file = file

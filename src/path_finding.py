@@ -4,7 +4,6 @@ from pathfinding.finder.a_star import AStarFinder
 
 matrix = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 1, 1, 1, 0, 0, 1, 1, 1],
     [1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 0, 1, 1, 1, 0, 0, 1],
     [1, 1, 1, 1, 0, 0, 1, 1, 1, 1],
@@ -15,7 +14,7 @@ matrix = [
 grid = Grid(matrix=matrix)
 
 start = grid.node(5, 0)
-end = grid.node(5, 6)
+end = grid.node(5, 4)
 
 finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
 path, runs = finder.find_path(start, end, grid)

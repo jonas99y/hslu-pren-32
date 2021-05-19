@@ -35,18 +35,18 @@ class MecanumDriver():
             self._rf.backwards()
             self._rb.backwards()
             print("Driving backward")
-        elif direction == Direction.right:
+        elif direction == Direction.left:
             self._lf.forward()
             self._lb.backwards()
             self._rf.backwards()
             self._rb.forward()
-            print("Driving right")
-        elif direction == Direction.left:
+            print("Driving left")
+        elif direction == Direction.right:
             self._lf.backwards()
             self._lb.forward()
             self._rf.forward()
             self._rb.backwards()
-            print("Driving Left")
+            print("Driving right")
 
     def stop(self):
         self._lf.stop()

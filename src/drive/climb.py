@@ -29,7 +29,7 @@ class Climb:
 
     def cycle(self, sensorstate: Dict[str, float]):
         if not self._moveInProgress:
-            self._driver.stop() # todo
+            # self._driver.stop() # todo
             return # nothing to do here!
         liftstate = self._lift.get_state()
         if self._climbInProgress:

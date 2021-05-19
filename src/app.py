@@ -5,11 +5,13 @@ import time
 from subprocess import Popen
 from config.device_config import lift, sensor, driver, liftDriver
 from drive.climb import Climb
+from drive.distancedriver import DistanceDriver
+from navigate import Navigate
 from sensor import Sensor
 from sensordata import SensorData
 src_dir = Path(__file__).parent
 from threading import Thread, Lock
-CYCLE_LENGTH = 0.1
+CYCLE_LENGTH = 0.5
 WARN_IF_CYCLE_LONGER = 0.05
 DEBUG = True
 def main():
@@ -23,8 +25,9 @@ def main():
         if not DEBUG:
             watchdogThread.start()
         climb = Climb(lift, driver)
-        # climb.start()
-        cycleables = [climb]
+        distanceDriver= DistanceDriver(driver)
+        navigate = Navigate(climb, distanceDriver)
+        cycleables = [navigate]
         while True:
             start = time.time()
             
