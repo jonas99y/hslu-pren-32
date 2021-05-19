@@ -16,25 +16,29 @@ class Lift:
         self._isRetracting = False
         self._state = Lift.inbetween
 
-    def get_state(self) -> float:
-        return self._state
-        pass
-
-    def update_state(self, sensorstate: Dict[str, float]):
+    def get_state(self,sensorstate: Dict[str, float]) -> float:
         if sensorstate[SensorData.switchLiftUp]:
-            self._state = Lift.climbed
+            return Lift.climbed
         elif sensorstate[SensorData.switchLiftDown]:
-            self._state = Lift.fullyRetracted
+            return Lift.fullyRetracted
         else:
-            self._state = Lift.inbetween
+            return Lift.inbetween
+
+    # def update_state(self, sensorstate: Dict[str, float]):
+    #     if sensorstate[SensorData.switchLiftUp]:
+    #         self._state = Lift.climbed
+    #     elif sensorstate[SensorData.switchLiftDown]:
+    #         self._state = Lift.fullyRetracted
+    #     else:
+    #         self._state = Lift.inbetween
 
     def climb(self):
         if self._isRetracting:
             self._isRetracting = False
         elif self._isClimbing:
             print("already climbing")
-        else:
-            self._isClimbing = True
+        
+        self._isClimbing = True
 
     def retract(self):
         if self._isClimbing:
@@ -45,8 +49,7 @@ class Lift:
             self._isRetracting = True
 
     def cycle(self, sensorstate: Dict[str, float]):
-        self.update_state(sensorstate)
-        state = self.get_state()
+        state = self.get_state(sensorstate)
         if self._isClimbing:
             if state == Lift.climbed:
                 self.stop()

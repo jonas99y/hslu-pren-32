@@ -12,7 +12,7 @@ class OnFirstStepState(State):
         self._driver = distanceDriver
         self._obstacleCamera = obstacleCamera
 
-    def start(self, context: Context) -> "State":
+    def _start(self, context: Context) -> "State":
         self._driver.drive(Direction.left, 100) # drive to the left
         self._driver.drive(Direction.right, 30)
         # take some pictures and stuff inbetween
@@ -20,4 +20,4 @@ class OnFirstStepState(State):
         self._driver.drive(Direction.right, 30)
 
         # start with pathfinding....
-        return self.next()
+        return

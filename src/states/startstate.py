@@ -5,7 +5,7 @@ from hal.switch import Switch
 
 class StartState(State):
     def __init__(self, nextState:State, startSwitch:Switch):
-        self._nextState = nextState
+        super().__init__(nextState)
         self._startSwitch = startSwitch
     
     def start(self, context:Context) -> "State":

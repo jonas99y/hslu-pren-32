@@ -6,7 +6,7 @@ from hal.mecanum_driver import MecanumDriver, Direction
 from sensordata import SensorData
 import time
 
-MOVE_FORWARD_TIMESPAN =1
+MOVE_FORWARD_TIMESPAN =1 
 MOVE_FORWARD_SPEED = 20
 
 
@@ -31,7 +31,7 @@ class Climb:
         if not self._moveInProgress:
             # self._driver.stop() # todo
             return # nothing to do here!
-        liftstate = self._lift.get_state()
+        liftstate = self._lift.get_state(sensorstate)
         if self._climbInProgress:
             if liftstate == Lift.climbed:
                 self._initialize_move_forward()

@@ -7,7 +7,8 @@ class State:
         self._nextState = nextState
     
     def start(self, context:Context) -> "State":
-        self.next()
-
-    def next(self)-> "State":
+        self._start(context)
         return self._nextState
+
+    def _start(self, context:Context) -> "State":
+        pass

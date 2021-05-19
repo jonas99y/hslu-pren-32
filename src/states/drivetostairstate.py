@@ -12,7 +12,7 @@ class DriveToStairState(State):
     def start(self, context: Context) -> "State":
         while True:
             if self._stairFinderCamera.is_stair_in_front():
-                return self.next()
+                return self._nextState
             else:
                 self._mecanumDriver.rotate(Direction.right)
                 time.sleep(1) #1s = about 90 degrees

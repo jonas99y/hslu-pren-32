@@ -10,9 +10,11 @@ from sensordata import SensorData
 from states.context import Context
 from states.drivetostairstate import DriveToStairState
 from states.endstate import EndState
+from states.initstate import InitState
 from states.scanpictogramstate import ScanPictogramState
 from states.signalpictogramState import SignalPictogramState
 from states.startstate import StartState
+from states.climbstate import ClimbState
 from stepawaredriver import StepAwareDriver
 from config.device_config import *
 
@@ -21,14 +23,18 @@ class Navigate:
         pictoCam = PictogramCamera()
         stairFinderCamera = StairFinderCamera()
         endState = EndState()
+        climb = Climb(lift, driver)
+        climbstate = ClimbState(endState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
         driveToStairState = DriveToStairState(endState, stairFinderCamera, driver)
         signalPictoState = SignalPictogramState(driveToStairState,ledDriver)
         scanPictoState = ScanPictogramState(signalPictoState, pictoCam)
-        startState = StartState(scanPictoState, switchStart)
+        # startState = StartState(scanPictoState, switchStart)
+        startState = StartState(climbstate, switchStart)
+        initState = InitState(startState, lift, switchLiftUp, switchLiftDown)
 
-        self._currentState = startState
+        self._currentState = initState
         self._context = Context()
 
     def cycle(self, sensorstate: Dict[str, float]):
-        self._currentState = self._currentState.cycle(self._context)
+        self._currentState = self._currentState.start(self._context)
 
