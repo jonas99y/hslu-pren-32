@@ -4,10 +4,10 @@ import cv2
 import time
 from picamera.array import PiRGBArray
 from picamera import PiCamera
-from videoStream import VideoStream
+from hal.led_driver import Piktogram
 
 class IconClassifier:
-    def __init__(self, resolutionWidth=640, resolutionHeight=480):
+    def __init__(self, resolutionWidth=720, resolutionHeight=1280):
         self._resolutionWidth = resolutionWidth
         self._resolutionHeight = resolutionHeight
 
@@ -24,8 +24,6 @@ class IconClassifier:
         width = input_details[0]['shape'][2]
 
         # Initialize video stream
-        #videostream = VideoStream(resolution=(self._resolutionWidth,self._resolutionHeight),framerate=30).start()
-        # time.sleep(1)
         camera = PiCamera()
         rawCapture = PiRGBArray(camera)
         # allow the camera to warmup
@@ -33,11 +31,9 @@ class IconClassifier:
         # grab an image from the camera
         camera.capture(rawCapture, format="bgr")
         image = rawCapture.array
-        # Grab frame from video stream
-        frame1 = image
 
-        # Crop frame
-        frame = frame1[cropHeight:self._resolutionHeight, 0:self._resolutionWidth]
+        # Grab frame from video stream and crop it
+        frame = image[cropHeight:self._resolutionHeight, 0:self._resolutionWidth]
 
         # Resize to expected shape [1xHxWx3]
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -58,16 +54,23 @@ class IconClassifier:
                 labelIndex = i
         icon = labels[labelIndex]
 
-        # print(f"the output is {output_data}")
-        # print(f"{icon} detected")
-
-        # videostream.stop()
-
-        return icon
+        pictogram = Piktogram.none
+        if(icon == "pen"):
+            pictogram = Piktogram.pencile
+        elif(icon == "ruler"):
+            pictogram = Piktogram.ruler
+        elif(icon == "hammer"):
+            pictogram = Piktogram.hammer
+        elif(icon == "bucket"):
+            pictogram = Piktogram.bucket
+        elif(icon == "taco"):
+            pictogram = Piktogram.taco
+        
+        return pictogram
 
 def main():
-    imW = 640
-    imH = 480
+    imW = 1280
+    imH = 720
     cropHeight = 240
     labelPath = "pren2_team32_icons_model_dict.txt"
     modelPath = "pren2_team32_icons_model.tflite"
