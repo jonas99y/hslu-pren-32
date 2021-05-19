@@ -1,30 +1,39 @@
 from typing import Dict
+from averagedsensor import AveragedSensor
 from hal.mecanum_driver import Direction, MecanumDriver
 import time
 
 CM_PER_S = 33
 SPEED = 20
-
+DISTANCE_THRESHOLD = 15
 class DistanceDriver:
-    def __init__(self, mecanumDriver:MecanumDriver):
+    def __init__(self, mecanumDriver:MecanumDriver, sensorLeft:AveragedSensor, sensorRight: AveragedSensor):
         self._driver = mecanumDriver
-        self._isDriving = False
-        self._endTime:float = 0
         self._driver.setSpeed(SPEED)
+        self._sensorLeft = sensorLeft
+        self._sensorRight = sensorRight
 
     def drive(self, direction:Direction, distance:float):
         print(f'drive {distance} in {direction}')
-        if not self._isDriving:
-            self._isDriving = True
-            self._endTime = time.time() + distance / CM_PER_S
-            self._driver.drive(direction)
-
-    def cycle(self, sensorstate: Dict[str, float]):
-        if self._isDriving:
-            if time.time() >= self._endTime:
+        endTime = time.time() + distance / CM_PER_S
+        
+        self._driver.drive(direction)
+        while True:
+            if time.time() >= endTime:
                 print("stop because time is reached")
                 self.stop()
+                return
+            else:
+                if direction == Direction.left:
+                    sensor = self._sensorLeft
+                elif direction == Direction.right:
+                    sensor = self._sensorRight
+                if sensor:
+                    distance =sensor.read()
+                    if distance != 0 and distance < DISTANCE_THRESHOLD:
+                        print(f'stop because distance {distance}')
+                        self.stop()
+                        return
 
     def stop(self):
-        self._isDriving = False
         self._driver.stop()

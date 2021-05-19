@@ -7,7 +7,7 @@ class ScanPictogramState(State):
         self._nextState = nextState
         self._cam = cam
 
-    def cycle(self, context:Context) -> "State":
+    def start(self, context:Context) -> "State":
         result = self._cam.detect_pictogram()
         if result:
             context.pictogram = result

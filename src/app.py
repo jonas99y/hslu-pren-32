@@ -22,8 +22,6 @@ def main():
         watchdogThread = Thread(target = watchdog, args=(lock,))
         if not DEBUG:
             watchdogThread.start()
-        climb = Climb(lift, driver)
-        distanceDriver= DistanceDriver(driver)
         navigate = Navigate()
         cycleables = [navigate]
         for i in range(0,10):

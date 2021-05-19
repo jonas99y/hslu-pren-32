@@ -8,7 +8,7 @@ class StartState(State):
         self._nextState = nextState
         self._startSwitch = startSwitch
     
-    def cycle(self, context:Context) -> "State":
+    def start(self, context:Context) -> "State":
         if self._startSwitch.getState():
             print("starting...")
             return self._nextState
