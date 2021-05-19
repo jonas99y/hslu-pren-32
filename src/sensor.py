@@ -2,6 +2,7 @@
 from pathlib import Path
 import time
 from typing import Dict, Union
+from averagedsensor import AveragedSensor
 from hal.distancesensor import DistanceSensor
 from hal.switch import Switch
 from sensordata import SensorData
@@ -15,12 +16,12 @@ class Sensor():
                  switchFrontLeft: Switch,
                  switchLiftUp: Switch,
                  switchLiftDown: Switch,
-                 sensorFrontLeft: Echo,
-                 sensorFrontRight: Echo,
-                 sensorSideLeft: Echo,
-                 sensorSideRight: Echo,
+                 sensorFrontLeft: AveragedSensor,
+                 sensorFrontRight: AveragedSensor,
+                 sensorSideLeft: AveragedSensor,
+                 sensorSideRight: AveragedSensor,
                  switchStart: Switch,
-                 samples = 5
+                 samples = 1
                  ):
         self._sensorData = sensorData
         self._switchFrontRight = switchFrontRight
@@ -43,10 +44,10 @@ class Sensor():
         data[SensorData.switchFrontLeft] = float(self._switchFrontLeft.getState())
         data[SensorData.switchLiftUp] = float(self._switchLiftUp.getState())
         data[SensorData.switchLiftDown] = float(self._switchLiftDown.getState())
-        data[SensorData.sensorFrontLeft] =self._sensorFrontLeft.read(samples=self._samples)
-        data[SensorData.sensorFrontRight] = self._sensorFrontRight.read(samples=self._samples)
-        data[SensorData.sensorSideLeft] = self._sensorSideLeft.read(samples=self._samples)
-        data[SensorData.sensorSideRight] = self._sensorSideRight.read(samples=self._samples)
+        data[SensorData.sensorFrontLeft] =self._sensorFrontLeft.read()
+        data[SensorData.sensorFrontRight] = self._sensorFrontRight.read()
+        data[SensorData.sensorSideLeft] = self._sensorSideLeft.read()
+        data[SensorData.sensorSideRight] = self._sensorSideRight.read()
         data[SensorData.switchStart] = float(self._switchStart.getState())
         return data
 

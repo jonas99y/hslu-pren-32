@@ -11,13 +11,11 @@ from sensor import Sensor
 from sensordata import SensorData
 src_dir = Path(__file__).parent
 from threading import Thread, Lock
-CYCLE_LENGTH = 0.5
+CYCLE_LENGTH = 0.1
 WARN_IF_CYCLE_LONGER = 0.05
 DEBUG = True
 def main():
     try:
-        # p = Popen(str(src_dir / 'sensor.py'))
-        # sensorData = SensorData(src_dir / 'sensor')
         global lastSignOfLifeAt
         lock = Lock()
         lastSignOfLifeAt = time.time()
@@ -62,6 +60,12 @@ def watchdog(lock):
             if time.time() - lastSignOfLifeAt > MAX_TIME_WITH_NO_SIGN_OF_LIFE:
                 emergency_stop()
         time.sleep(WATCHDOG_TIMEOUT)
+
+# def read_sensors():
+#     while True:
+#         start = time.time()
+#         data =  sensor.read_sensors()
+#         print(f'sensorcycle: {time.time()-start}')
 
 def emergency_stop():
     print("emergency stop!")
