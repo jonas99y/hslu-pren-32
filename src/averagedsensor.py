@@ -5,10 +5,16 @@ from Bluetin_Echo.Bluetin_Echo import Echo
 class AveragedSensor:
     def __init__(self, echo: Echo):
         self._echo = echo
-        self._buffer = [1,1,1,1,1]
+        self._lastValue = 5
+        self._buffer = [1,1,1]
 
     def read(self,)-> float:
         v0 = self._echo.read()
+        if v0 >0 and v0< 1000:
+            self._lastValue = v0
+            return v0
+        else:
+            return self._lastValue
         self._buffer.append(v0)
         total = 0
         amountOfValues = 0

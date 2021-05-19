@@ -50,6 +50,7 @@ class LedDriver():
             print("Led: pencile")  
 
     def ledBlink(self, piktogram:Piktogram):
+        return #this does now work yet
         if piktogram == Piktogram.none:
             print("wrong case (ledBlink)")
         elif piktogram == Piktogram.hammer:

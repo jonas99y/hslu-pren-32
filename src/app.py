@@ -11,7 +11,7 @@ from sensor import Sensor
 from sensordata import SensorData
 src_dir = Path(__file__).parent
 from threading import Thread, Lock
-CYCLE_LENGTH = 0.1
+CYCLE_LENGTH = 0.01
 WARN_IF_CYCLE_LONGER = 0.05
 DEBUG = True
 def main():
@@ -24,8 +24,10 @@ def main():
             watchdogThread.start()
         climb = Climb(lift, driver)
         distanceDriver= DistanceDriver(driver)
-        navigate = Navigate(climb, distanceDriver)
+        navigate = Navigate()
         cycleables = [navigate]
+        for i in range(0,10):
+            sensor.read_sensors() # makes sure sensors have valid values for avging
         while True:
             start = time.time()
             

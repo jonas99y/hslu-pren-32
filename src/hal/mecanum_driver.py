@@ -48,6 +48,21 @@ class MecanumDriver():
             self._rb.backwards()
             print("Driving right")
 
+    def rotate(self, direction:Direction):
+        if direction == Direction.left:
+            self._lf.backwards()
+            self._lb.backwards()
+            self._rf.forward()
+            self._rb.forward()
+            print("Rotating left")
+        elif direction == Direction.right:
+            self._lf.forward()
+            self._lb.forward()
+            self._rf.backwards()
+            self._rb.backwards()
+            print("Rotating right")
+
+
     def stop(self):
         self._lf.stop()
         self._lb.stop()

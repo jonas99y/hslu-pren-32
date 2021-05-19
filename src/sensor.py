@@ -46,8 +46,11 @@ class Sensor():
         data[SensorData.switchLiftDown] = float(self._switchLiftDown.getState())
         data[SensorData.sensorFrontLeft] =self._sensorFrontLeft.read()
         data[SensorData.sensorFrontRight] = self._sensorFrontRight.read()
+        time.sleep(0.06)
         data[SensorData.sensorSideLeft] = self._sensorSideLeft.read()
+        time.sleep(0.06)
         data[SensorData.sensorSideRight] = self._sensorSideRight.read()
+        time.sleep(0.06)
         data[SensorData.switchStart] = float(self._switchStart.getState())
         return data
 
