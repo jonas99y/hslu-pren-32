@@ -2,7 +2,7 @@
 from typing import List
 
 
-class ObstacelCamera:
+class ObstacleCamera:
 
-    def get_obstacles()->List[bool]:
-        return [0,1,0]
+    def get_obstacles(self, currentMatrix: List[List[bool]], step:int, postion:int)-> List[List[bool]]:
+        pass
