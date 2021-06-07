@@ -1,4 +1,5 @@
 
+from time import sleep
 from drive.lift import Lift
 from hal.switch import Switch
 from sensordata import SensorData
@@ -14,6 +15,7 @@ class InitState(State):
         self._switchLiftUp = switchLiftUp
 
     def _start(self, context: Context) -> "State":
+        sleep(0.5)
         self._lift.retract()
         while self._lift.get_state({
             SensorData.switchLiftUp: self._switchLiftUp.getState(),

@@ -14,7 +14,7 @@ class DistanceSensor:
         time.sleep(0.1)
         GPIO.output(self._trigger, False)
 
-    def measure(self) -> float:
+    def read(self) -> float:
         try:
             timeoutThreshold = 0.01
             functionStart = time.time()

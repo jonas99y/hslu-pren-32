@@ -3,7 +3,9 @@ from pathlib import Path
 
 from Bluetin_Echo.Bluetin_Echo import Echo
 from averagedsensor import AveragedSensor
+from drive.distancedriver import DistanceDriver
 from drive.lift import Lift
+from drive.movetofrontofstair import MoveToFrontOfStair
 from hal.distancesensor import DistanceSensor
 from hal.led import Led
 from hal.led_driver import LedDriver
@@ -44,11 +46,18 @@ switchStart = Switch(SWITCH_START)
 # sensorSideLeft = DistanceSensor(SENSOR_TIGGER, SENSOR_SIDE_LEFT)
 # sensorSideRight = DistanceSensor(SENSOR_TIGGER, SENSOR_SIDE_RIGHT)
 
-sensorFrontLeft = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_FRONT_LEFT))
-sensorFrontRight = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_FRONT_RIGHT))
-sensorSideLeft = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_SIDE_LEFT))
-sensorSideRight = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_SIDE_RIGHT))
+# sensorFrontLeft = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_FRONT_LEFT))
+# sensorFrontRight = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_FRONT_RIGHT))
+# sensorSideLeft = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_SIDE_LEFT))
+# sensorSideRight = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_SIDE_RIGHT))
 
+sensorFrontLeft =Echo(SENSOR_TIGGER, SENSOR_FRONT_LEFT)
+sensorFrontRight = Echo(SENSOR_TIGGER, SENSOR_FRONT_RIGHT)
+sensorSideLeft = Echo(SENSOR_TIGGER, SENSOR_SIDE_LEFT)
+sensorSideRight = Echo(SENSOR_TIGGER, SENSOR_SIDE_RIGHT)
+
+distanceDriver = DistanceDriver(driver, sensorSideLeft, sensorSideRight)
+movetofront = MoveToFrontOfStair(lf, lb, rf, rb, driver, pwm, switchFrontLeft, switchFrontRight, sensorFrontLeft, sensorFrontRight)
 ledA = Led(LED_A)
 ledB = Led(LED_B)
 ledC = Led(LED_C)
