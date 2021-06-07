@@ -7,7 +7,7 @@ from sensordata import SensorData
 import time
 
 MOVE_FORWARD_TIMESPAN =0.9 
-MOVE_FORWARD_SPEED = 20
+MOVE_FORWARD_SPEED = 30
 MOVE_TO_NEXT_STEP_SPEED = 10
 
 
@@ -31,7 +31,6 @@ class Climb:
 
     def cycle(self, sensorstate: Dict[str, float]):
         if not self._moveInProgress:
-            # self._driver.stop() # todo
             return # nothing to do here!
         liftstate = self._lift.get_state(sensorstate)
         if self._climbInProgress:
@@ -41,17 +40,11 @@ class Climb:
             if liftstate == Lift.climbed:
                 if (time.time() - self._moveForwardStatedAt) >= MOVE_FORWARD_TIMESPAN:
                     self._stop_move_forward_and_initalize_retracting()
-            if liftstate == Lift.fullyRetracted:
-                if self._has_contact_at_front(sensorstate):
-                    self._moveInProgress = False
-                    self._movingToNextStep = False
-                else:
-                    if not self._movingToNextStep:
-                        self._initialize_move_to_next_step()
+            elif liftstate == Lift.fullyRetracted:
+                self._moveInProgress = False
+                self._driver.stop()
         self._lift.cycle(sensorstate)
 
-    def _has_contact_at_front(self, sensorstate: Dict[str, float]):
-        return bool(sensorstate[SensorData.switchFrontLeft]) or bool(sensorstate[SensorData.switchFrontRight])
 
     def _initialize_move_forward(self):
         print("init move foreward")
@@ -65,9 +58,3 @@ class Climb:
         self._driver.stop()
         self._retractInProgress = True
         self._lift.retract()
-
-    def _initialize_move_to_next_step(self):
-        self._movingToNextStep = True
-        print("init move to next step")
-        self._driver.setSpeed(MOVE_TO_NEXT_STEP_SPEED)
-        self._driver.drive(Direction.forward)
