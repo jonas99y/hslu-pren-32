@@ -4,7 +4,7 @@ eval sudo apt update
 eval sudo apt upgrade
 eval sudo apt install libssl-dev libncurses5-dev libsqlite3-dev libreadline-dev libtk8.5 libgdm-dev libdb4o-cil-dev libpcap-dev
 eval pip3 install -r hslu-pren-32/src/requirements.txt
-
+eval sudo apt-get install libatlas-base-dev
 eval sudo apt install python3-tflite-runtime
 
 eval chmod +x hslu-pren-32/run.sh

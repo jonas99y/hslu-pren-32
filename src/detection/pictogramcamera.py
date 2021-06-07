@@ -10,7 +10,7 @@ src_dir = Path(__file__).parent
 
 class PictogramCamera:
 
-    def __init__(self):
+    def __init__(self, resolutionWidth=720, resolutionHeight=1280):
         labelPath = str(Path.joinpath(src_dir, "pren2_team32_icons_model_dict.txt"))
         modelPath = str(Path.joinpath(src_dir, "pren2_team32_icons_model.tflite"))
 
@@ -23,7 +23,9 @@ class PictogramCamera:
         self.input_details = self.interpreter.get_input_details()
         self.output_details = self.interpreter.get_output_details()
         self.height = self.input_details[0]['shape'][1]
-        self.width = self.input_details[0]['shape'][2]        
+        self.width = self.input_details[0]['shape'][2]     
+        self._resolutionWidth = resolutionWidth
+        self._resolutionHeight = resolutionHeight   
 
     def detect_pictogram(self)-> Piktogram:
         cropHeight = 240
@@ -74,5 +76,5 @@ class PictogramCamera:
             pictogram = Piktogram.bucket
         elif(icon == "taco"):
             pictogram = Piktogram.taco
-        
+        print(icon)
         return pictogram

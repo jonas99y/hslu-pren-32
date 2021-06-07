@@ -8,7 +8,7 @@ picamera
 ilock
 PyYAML
 pathfinding
-tensorflow==2.0.0
+# python3 -m pip install src/detection/tensorflow-2.0.0-cp37-none-linux_armv7l.whl
 opencv-python
 h5py==2.9.0
 Bluetin_Echo
