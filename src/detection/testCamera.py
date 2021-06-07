@@ -4,6 +4,8 @@ from picamera import PiCamera
 import time
 import cv2
 import datetime
+import tensorflow as tf
+import numpy as np
 
 
 # initialize the camera and grab a reference to the raw camera capture
@@ -20,4 +22,5 @@ image = rawCapture.array
 
 # save image with timestamp in filename
 timestamp = datetime.datetime.now().strftime('%m-%d-%Y_%H.%M.%S')
-cv2.imwrite(f"picamera_{timestamp}.png",image)
+name = f"img/picamera_{timestamp}.png"
+cv2.imwrite(name,image)

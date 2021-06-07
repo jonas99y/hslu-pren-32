@@ -2,113 +2,133 @@ import tensorflow as tf
 import numpy as np
 import cv2
 import time
+import datetime
 from threading import Thread
 from pathlib import Path
-from videoStream import VideoStream
 from picamera.array import PiRGBArray
 from picamera import PiCamera
-from obstacledetectiondata import ObstacleDetectionData
 
-class ObstacleDetector:
-    def __init__(self, obstacleDetectionData: ObstacleDetectionData, minConfidenceThreshold = 0.5, resolutionWidth = 640, resolutionHeight = 480):
-        self._minConfidenceThreshold = minConfidenceThreshold
-        self._resolutionWidth = resolutionWidth
-        self._resolutionHeight = resolutionHeight
-        self._detecting = False
-        self._obstacleDetectionData = obstacleDetectionData
+# position: 0 = left, 1 = middle left, 2 = middle right, 3 = right
+def detectObstacles(matrix, position):
+    positionOffset = 0
+    if(position == 1):
+        positionOffset = 2
+    elif(position == 2):
+        positionOffset = 5
+    elif(position == 3):
+        positionOffset = 7
 
-    def startDetection(self, modelPath):
-        self.detecting = True
-        interpreter = tf.lite.Interpreter(model_path=modelPath)
+    # initialize the camera and grab a reference to the raw camera capture
+    camera = PiCamera()
+    rawCapture = PiRGBArray(camera)
+    # allow the camera to warmup
+    time.sleep(0.1)
+    # grab an image from the camera
+    camera.capture(rawCapture, format="bgr")
+    image = rawCapture.array
+    #image = cv2.imread("detection/img/picamera_05-14-2021_09.49.44.png")
 
-        interpreter.allocate_tensors()
+    # save image with timestamp in filename
+    #timestamp = datetime.datetime.now().strftime('%m-%d-%Y_%H.%M.%S')
+    #name = f"img/picamera_{timestamp}.png"
+    #cv2.imwrite(name,image)
 
-        input_details = interpreter.get_input_details()
-        output_details = interpreter.get_output_details()
-        height = input_details[0]['shape'][1]
-        width = input_details[0]['shape'][2]
+    min_conf_threshold = 0.5
 
-        # Initialize video stream
-        # videostream = VideoStream(resolution=(self._resolutionWidth,self._resolutionHeight),framerate=30).start()
-        # time.sleep(1)
+    PATH_TO_LABELS = "detection/obstacle_detection_labels.txt"
+    PATH_TO_MODEL = "detection/pren2_team32_obstacles_model_2.tflite"
 
-        camera = PiCamera()
-        camera.resolution = (640, 480)
-        rawCapture = PiRGBArray(camera, size=(640, 480))
-        # allow the camera to warmup
-        time.sleep(0.1)
+    with open(PATH_TO_LABELS, 'r') as f:
+        labels = [line.strip() for line in f.readlines()]
 
+    interpreter = tf.lite.Interpreter(model_path=PATH_TO_MODEL)
 
-        cycle = 0
-        #for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
-        while self.detecting:
+    interpreter.allocate_tensors()
 
-            cycle += 1
-            # grab an image from the camera
-            camera.capture(rawCapture, format="bgr")
-            image = rawCapture.array
-            # Grab frame from video stream
-            frame1 = image
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
 
-            # Acquire frame and resize to expected shape [1xHxWx3]
-            frame = frame1.copy()
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            frame_resized = cv2.resize(frame_rgb, (width, height))
-            input_data = np.expand_dims(frame_resized, axis=0)
+    height = input_details[0]['shape'][1]
+    width = input_details[0]['shape'][2]
 
-            # Perform the actual detection by running the model with the image as input
-            interpreter.set_tensor(input_details[0]['index'],input_data)
-            interpreter.invoke()
+    image = cv2.rotate(image, cv2.cv2.ROTATE_90_COUNTERCLOCKWISE)
 
-            # Retrieve detection results
-            boxes = interpreter.get_tensor(output_details[0]['index'])[0] # Bounding box coordinates of detected objects
-            classes = interpreter.get_tensor(output_details[1]['index'])[0] # Class index of detected objects
-            scores = interpreter.get_tensor(output_details[2]['index'])[0] # Confidence of detected objects
-            
-            data = {}
-            data['cycle'] = cycle
-            data['detected obstacles'] = []
+    imH, imW, _ = image.shape
+    image_resized = cv2.resize(image, (width, height))
+    input_data = np.expand_dims(image_resized, axis=0)
 
-            obstacleNumber = 0
-            # Loop over all detections and draw detection box if confidence is above minimum threshold
-            for i in range(len(scores)):
-                if ((scores[i] > self._minConfidenceThreshold) and (scores[i] <= 1.0)):
-                    obstacleNumber += 1
+    interpreter.set_tensor(input_details[0]['index'],input_data)
+    interpreter.invoke()
 
-                    # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
-                    obstacleData = {}
-                    obstacleData['obstacle number'] = obstacleNumber
-                    obstacleData['confidence'] = scores[i]
-                    obstacleData['ymin'] = float(max(0,boxes[i][0]))
-                    obstacleData['xmin'] = float(max(0,boxes[i][1]))
-                    obstacleData['ymax'] = float(min(1,boxes[i][2]))
-                    obstacleData['xmax'] = float(min(1,boxes[i][3]))
+    # Retrieve detection results
+    boxes = interpreter.get_tensor(output_details[0]['index'])[0] # Bounding box coordinates of detected objects
+    classes = interpreter.get_tensor(output_details[1]['index'])[0] # Class index of detected objects
+    scores = interpreter.get_tensor(output_details[2]['index'])[0] # Confidence of detected objects
 
-                    data['detected obstacles'].append(obstacleData)
+    for i in range(len(scores)):
+        if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
 
-            # self._obstacleDetectionData.write(data)
-            print(data)
+            # Get bounding box coordinates and draw box
+            # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
+            ymin = float(max(0,(boxes[i][0])))
+            xmin = float(max(0,(boxes[i][1])))
+            ymax = float(min(1,(boxes[i][2])))
+            xmax = float(min(1,(boxes[i][3])))
+            print(boxes[i])
+            print(f"{ymin}, {xmin}, {ymax}, {xmax}")
+            # check 2nd step
+            if (ymin > 0.53):
+                if(xmin < 0.33):
+                    matrix[3][0 + positionOffset] = 0
+                    if(xmax > 0.33):
+                        matrix[3][1 + positionOffset] = 0
+                elif(xmin < 0.66):
+                    matrix[3][1 + positionOffset] = 0
+                if(xmax > 0.66):
+                    matrix[3][2 + positionOffset] = 0
 
-        # Clean up
-        cv2.destroyAllWindows()
-        # videostream.stop()
-
-    def stopDetection(self):
-        self._detecting = False
+            # check 3rd step
+            elif (ymax > 0.28 and ymax < 0.47):
+                if(xmin < 0.33):
+                    matrix[2][0 + positionOffset] = 0
+                    if(xmax > 0.33):
+                        matrix[2][1 + positionOffset] = 0
+                elif(xmin < 0.66):
+                    matrix[2][1 + positionOffset] = 0
+                if(xmax > 0.66):
+                    matrix[2][2 + positionOffset] = 0
+            # check 4th step
+            elif (ymax > 0.10 and ymax < 0.28):
+                if(xmin < 0.33):
+                    matrix[1][0 + positionOffset] = 0
+                    if(xmax > 0.33):
+                        matrix[1][1 + positionOffset] = 0
+                elif(xmin < 0.66):
+                    matrix[1][1 + positionOffset] = 0
+                if(xmax > 0.66):
+                    matrix[1][2 + positionOffset] = 0
+            # check 5th step
+            elif (ymin < 0.15):
+                if(xmin < 0.33):
+                    matrix[0][0 + positionOffset] = 0
+                    if(xmax > 0.33):
+                        matrix[0][1 + positionOffset] = 0
+                elif(xmin < 0.66):
+                    matrix[0][1 + positionOffset] = 0
+                if(xmax > 0.66):
+                    matrix[0][2 + positionOffset] = 0
 
 def main():  
-    min_conf_threshold = 0.5
-    imW = 640
-    imH = 480
-    labelsPath = 'obstacle_detection_labels.txt'
-    modelPath = 'pren2_team32_obstacles_model_2.tflite'
+    matrix = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ]
 
-    detector = ObstacleDetector(ObstacleDetectionData((Path(__file__).parent/'obstacles')), minConfidenceThreshold=min_conf_threshold, resolutionHeight=imH, resolutionWidth=imW)
-    detector.startDetection(modelPath=modelPath)
+    detectObstacles(matrix=matrix, position=0)
+    print(matrix)
 
-    time.sleep(5)
-
-    detector.stopDetection()
 
 if __name__ == '__main__':
     main()
