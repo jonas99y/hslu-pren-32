@@ -47,7 +47,7 @@ class DistanceDriver:
         actualLeft = self._sensorLeft.read()
         time.sleep(0.1)
         actualRight = self._sensorRight.read()
-        actualPos = get_position(actualLeft, actualRight, context.get_current_obstacles())
+        actualPos = get_position(actualLeft, actualRight, context)
         print(f"DistanceDriver: actualPos: {actualPos}")
         print(f"DistanceDriver: actualPos: {actualPos}")
         dif = actualPos-pos

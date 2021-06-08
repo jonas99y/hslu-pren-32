@@ -36,12 +36,12 @@ class OnFirstStepState(State):
         self._update_obstacles_here(context)  
 
     def _update_obstacles_here(self, context):
-        position = self._get_pos()
+        position = self._get_pos(context)
         print(position)
-        # context.obstacles = self._obstacleCamera.get_obstacles(context.obstacles, position ,0)
+        context.obstacles = self._obstacleCamera.get_obstacles(context.obstacles, position ,0)
 
-    def _get_pos(self):
+    def _get_pos(self, context:Context):
         l = self._sensorLeft.read()
         sleep(0.1)
         r = self._sensorRight.read()
-        return get_position(l,r,[])
+        return get_position(l,r,context)

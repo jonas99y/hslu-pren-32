@@ -45,7 +45,7 @@ class StateMachine:
         # self._currentState = ReadSideSensorState(sensorSideLeft, sensorSideRight)
         self._context = Context()
         self._context.debug = True
-        self._context.currentStep = 1
+        self._context.currentStep = 0
         self._context.pictogram = Piktogram.pencile
         self._context.obstacles = numpy.zeros((6,136), dtype=bool).tolist()
 

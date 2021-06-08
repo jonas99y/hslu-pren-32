@@ -19,5 +19,5 @@ class ReadSideSensorState(State):
             sleep(0.5)
             r = self._right.read()
             print(f"{i}:r: {r}")
-            print(f"get_position(): {get_position(l,r,[])}")
+            print(f"get_position(): {get_position(l,r,context)}")
             print("\n-----\n")

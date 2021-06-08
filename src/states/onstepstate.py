@@ -23,7 +23,7 @@ class OnStepState(State):
         l = self._sensorLeft.read()
         sleep(0.1)
         r = self._sensorRight.read()
-        currentPosition = get_position(l, r, context.get_current_obstacles())
+        currentPosition = get_position(l, r, context)
         print(f"Current postion: {currentPosition} base on {l} and {r}.")
         print(f"Current step is {context.currentStep}")
         grid = Grid(matrix=context.obstacles, inverse=True)

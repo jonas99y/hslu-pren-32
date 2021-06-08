@@ -25,11 +25,11 @@ class MoveToFrontOfStair:
 
     def start(self):
         #hack
-        self._mecanumDriver.setSpeed(20)
-        self._mecanumDriver.drive(Direction.forward)
-        sleep(0.5)
-        self._mecanumDriver.stop()
-        return
+        # self._mecanumDriver.setSpeed(20)
+        # self._mecanumDriver.drive(Direction.forward)
+        # sleep(0.5)
+        # self._mecanumDriver.stop()
+        # return
         sleep(0.1)
         distanceLeft = self._sensorLeft.read()
         sleep(0.1)
