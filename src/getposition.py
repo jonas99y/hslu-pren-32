@@ -8,12 +8,13 @@ def get_position(measuredDistanceLeft:float, measuredDistanceRight:float, obstac
     possiblePositionFromLeftSensor = 0
     possiblePositionFromRightSensor = 0
     possiblePositionAverage = 0
-    if(measuredDistanceLeft < 40 and measuredDistanceLeft > 0):
-        possiblePositionFromLeftSensor = min(measuredDistanceLeft + cameraOffset, stairWidth - cameraOffset)
+    if measuredDistanceLeft > measuredDistanceRight:
+        if measuredDistanceRight != 0:
+            return round(max(stairWidth - measuredDistanceRight - cameraOffset, cameraOffset))
+    elif measuredDistanceLeft != 0:
+        return round(min(measuredDistanceLeft + cameraOffset, stairWidth - cameraOffset))
 
-    if(measuredDistanceRight < 40 and measuredDistanceRight > 0):
-        possiblePositionFromRightSensor = max(stairWidth - measuredDistanceRight - cameraOffset, cameraOffset)
-
+    return 0
     if(possiblePositionFromLeftSensor > 0):
         if(possiblePositionFromRightSensor > 0):
             possiblePositionAverage = (possiblePositionFromLeftSensor + possiblePositionFromRightSensor) / 2
