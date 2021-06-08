@@ -46,7 +46,7 @@ class StateMachine:
         self._context = Context()
         self._context.debug = True
         self._context.pictogram = Piktogram.pencile
-        self._context.obstacles = numpy.zeros((4,136), dtype=bool).tolist()
+        self._context.obstacles = numpy.zeros((5,136), dtype=bool).tolist()
 
         for i in range(46, 59):
             self._context.obstacles[0][i] = True
