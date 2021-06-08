@@ -81,22 +81,22 @@ class ObstacleCamera:
                 if(ymax > 660):
                     xmin_cm = int(xmin * self.cm_per_pixel_1st_step) - self.x_offset_1st_step + position
                     xmax_cm = int(xmax * self.cm_per_pixel_1st_step) - self.x_offset_1st_step + position
-                    currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=4-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
+                    currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=5-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
                 # check 2nd step
                 elif(ymin < 575 and ymax > 330):
                     xmin_cm = int(xmin * self.cm_per_pixel_1st_step) - self.x_offset_1st_step + position
                     xmax_cm = int(xmax * self.cm_per_pixel_1st_step) - self.x_offset_1st_step + position
-                    currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=3-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
+                    currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=4-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
                 # check 3rd step
                 elif(ymin < 265 and ymax > 185):
                     xmin_cm = int(xmin * self.cm_per_pixel_1st_step) - self.x_offset_1st_step + position
                     xmax_cm = int(xmax * self.cm_per_pixel_1st_step) - self.x_offset_1st_step + position
-                    currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=2-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
+                    currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=3-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
                 # check 4th step
                 elif(ymin < 125 ):
                     xmin_cm = int(xmin * self.cm_per_pixel_1st_step) - self.x_offset_1st_step + position
                     xmax_cm = int(xmax * self.cm_per_pixel_1st_step) - self.x_offset_1st_step + position
-                    currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=1-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
+                    currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=2-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
 
         return currentMatrix
 
