@@ -27,6 +27,7 @@ class Climb:
         else:
             self._moveInProgress = True
             self._climbInProgress = True
+            self._isMovingForeward = False
             self._lift.climb()
 
     def cycle(self, sensorstate: Dict[str, float]):
@@ -35,11 +36,13 @@ class Climb:
         liftstate = self._lift.get_state(sensorstate)
         if self._climbInProgress:
             if liftstate == Lift.climbed:
+                self._isMovingForeward = True
                 self._initialize_move_forward()
         else:
-            if liftstate == Lift.climbed:
+            if self._isMovingForeward:
                 if (time.time() - self._moveForwardStatedAt) >= MOVE_FORWARD_TIMESPAN:
                     self._stop_move_forward_and_initalize_retracting()
+                    self._isMovingForeward = False
             elif liftstate == Lift.fullyRetracted:
                 self._moveInProgress = False
                 self._driver.stop()

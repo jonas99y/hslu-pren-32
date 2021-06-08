@@ -4,6 +4,8 @@ from getposition import get_position
 from hal.mecanum_driver import Direction, MecanumDriver
 import time
 
+from states.context import Context
+
 CM_PER_S = 33
 SPEED = 20
 DISTANCE_THRESHOLD = 15
@@ -41,14 +43,24 @@ class DistanceDriver:
             sensor = self._sensorRight
         return sensor
 
-    def drive_to_pos(self, pos:float):
+    def drive_to_pos(self, pos:float, context:Context):
         actualLeft = self._sensorLeft.read()
+        time.sleep(0.1)
         actualRight = self._sensorRight.read()
-        actualPos = get_position(actualLeft, actualRight, []) #TODO, add obstacles
+        actualPos = get_position(actualLeft, actualRight, context.get_current_obstacles())
+        print(f"DistanceDriver: actualPos: {actualPos}")
+        print(f"DistanceDriver: actualPos: {actualPos}")
         dif = actualPos-pos
+        print(f"DistanceDriver: dif: {dif}")
         absDif = abs(actualPos-pos)
+        print(f"DistanceDriver: absDif: {absDif}")
+        diretion = Direction.left if dif > 0 else Direction.right
+        if diretion == Direction.left:
+            print(f"DistanceDriver: drinving Left")
+        else:
+            print(f"DistanceDriver: drinving right")
         if absDif > 5:
-            self.drive(Direction.left if dif > 0 else Direction.right, absDif)
+            self.drive(diretion, absDif)
 
     def drive_until_distance_reached(self, distance:float, direction:Direction):
         sensor = self._get_sensor_by_direction(direction)

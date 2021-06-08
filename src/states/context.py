@@ -12,3 +12,5 @@ class Context:
 
     def get_current_obstacles(self)-> List[bool]:
         return self.obstacles[self.currentStep]
+    def get_next_obstacles(self)-> List[bool]:
+        return self.obstacles[self.currentStep+1]

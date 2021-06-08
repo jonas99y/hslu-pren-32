@@ -27,17 +27,17 @@ class StateMachine:
         climb = Climb(lift, driver)
         hasStepInFrontCheckerState = HasStepInFrontCheckerState(None, None, sensorFrontLeft, sensorSideRight)
         climbstate = ClimbState(hasStepInFrontCheckerState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
-        onStepState = OnStepState(endState, movetofront)
+        onStepState = OnStepState(climbstate, movetofront, distanceDriver)
         driveToPictogramState = DriveToPictogramState(endState, distanceDriver)
         hasStepInFrontCheckerState._hasNoStepInFront = driveToPictogramState
         hasStepInFrontCheckerState._hasStepInFront = onStepState
 
         driveToStairState = DriveToStairState(endState, stairFinderCamera, driver)
         signalPictoState = SignalPictogramState(driveToStairState,ledDriver)
-        scanPictoState = ScanPictogramState(endState, pictoCam, driver)
+        # scanPictoState = ScanPictogramState(endState, pictoCam, driver)
         # startState = StartState(scanPictoState, switchStart)
-        onFirstStepState = OnFirstStepState(endState, distanceDriver, movetofront, ObstacleCamera())
-        firstClimb = ClimbState(onFirstStepState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
+        # onFirstStepState = OnFirstStepState(endState, distanceDriver, movetofront, ObstacleCamera())
+        # firstClimb = ClimbState(onFirstStepState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
 
         startState = StartState(onStepState, switchStart)
         initState = InitState(startState, lift, switchLiftUp, switchLiftDown)
@@ -45,13 +45,14 @@ class StateMachine:
         # self._currentState = ReadSideSensorState(sensorSideLeft, sensorSideRight)
         self._context = Context()
         self._context.debug = True
+        self._context.currentStep = 1
         self._context.pictogram = Piktogram.pencile
-        self._context.obstacles = numpy.zeros((5,136), dtype=bool).tolist()
+        self._context.obstacles = numpy.zeros((6,136), dtype=bool).tolist()
 
         for i in range(46, 59):
-            self._context.obstacles[0][i] = True
-        for i in range(98, 124):
             self._context.obstacles[1][i] = True
+        for i in range(98, 124):
+            self._context.obstacles[2][i] = True
 
 
     def start(self):

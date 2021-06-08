@@ -27,4 +27,5 @@ class ClimbState(State):
             if not self._climb._moveInProgress:
                 self._climb._driver.stop() #HACK
                 print("next step reached...")
+                context.currentStep+=1
                 return

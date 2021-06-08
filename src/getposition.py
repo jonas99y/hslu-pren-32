@@ -1,36 +1,16 @@
 
-from typing import List
+from typing import Dict, List
 
 def get_position(measuredDistanceLeft:float, measuredDistanceRight:float, obstaclesOfCurrentStep:List[bool]):
     stairWidth = 136
     cameraOffset = 11.5
     errorMargin = 10
-    matrixSize = len(obstaclesOfCurrentStep)
-    possibleDistanceAndPositions = []
-    free = True
-    lastFreePosition = 0
-    for i in range(1, matrixSize - 1):
-        if(obstaclesOfCurrentStep[i]):
-            if(free):
-                possibleDistanceAndPosition = {
-                    "length": i - 1 - lastFreePosition,
-                    "position": lastFreePosition
-                    }
-                possibleDistanceAndPositions.append(possibleDistanceAndPosition)
-                free = False
-        elif(not free):
-            lastFreePosition = i
-            free = True
-    if(free):
-        possibleDistanceAndPosition = {
-            "length": i - 1 - lastFreePosition,
-            "position": lastFreePosition
-            }
-        possibleDistanceAndPositions.append(possibleDistanceAndPosition)
 
-    for possibleDistanceAndPosition in possibleDistanceAndPositions:
-        if abs(measuredDistanceLeft + measuredDistanceRight + 2*cameraOffset - possibleDistanceAndPosition["length"]) < errorMargin:
-            return round(possibleDistanceAndPosition["position"] + measuredDistanceLeft + cameraOffset)
+    sectors = get_free_sectors(obstaclesOfCurrentStep)
+
+    for position, length in sectors.items():
+        if abs(measuredDistanceLeft + measuredDistanceRight + 2*cameraOffset - length) < errorMargin:
+            return round(position + measuredDistanceLeft + cameraOffset)
 
     if measuredDistanceLeft > measuredDistanceRight:
         if measuredDistanceRight != 0:
@@ -39,6 +19,24 @@ def get_position(measuredDistanceLeft:float, measuredDistanceRight:float, obstac
         return round(min(measuredDistanceLeft + cameraOffset, stairWidth - cameraOffset))
 
     return 0
+
+def get_free_sectors(obstaclesOfCurrentStep:List)-> Dict[int,int]:
+    matrixSize = len(obstaclesOfCurrentStep)
+    possibleDistanceAndPositions = []
+    entries= {}
+    free = True
+    lastFreePosition = 0
+    for i in range(1, matrixSize - 1):
+        if(obstaclesOfCurrentStep[i]):
+            if(free):
+                entries[lastFreePosition] = i - 1 - lastFreePosition
+                free = False
+        elif(not free):
+            lastFreePosition = i
+            free = True
+    if(free):
+        entries[lastFreePosition] = matrixSize - 2 -lastFreePosition
+    return entries
 
 def main():  
     stairWidth = 136

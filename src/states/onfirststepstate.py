@@ -20,18 +20,18 @@ class OnFirstStepState(State):
 
     def _start(self, context: Context) -> "State":
         
-        self._driver.drive_to_pos(0)
+        self._driver.drive_to_pos(0, context)
         self._update_obstacles_here(context)
-        self._driver.drive_to_pos(30)
+        self._driver.drive_to_pos(30, context)
 
         self._update_obstacles_here(context)
-        self._driver.drive_to_pos(60)
+        self._driver.drive_to_pos(60, context)
 
         self._update_obstacles_here(context)   
-        self._driver.drive_to_pos(90)
+        self._driver.drive_to_pos(90, context)
 
         self._update_obstacles_here(context)  
-        self._driver.drive_to_pos(120)
+        self._driver.drive_to_pos(120, context)
 
         self._update_obstacles_here(context)  
 
