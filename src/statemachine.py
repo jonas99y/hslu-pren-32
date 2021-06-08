@@ -27,7 +27,7 @@ class StateMachine:
         climb = Climb(lift, driver)
         hasStepInFrontCheckerState = HasStepInFrontCheckerState(None, None, sensorFrontLeft, sensorSideRight)
         climbstate = ClimbState(hasStepInFrontCheckerState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
-        onStepState = OnStepState(climbstate, movetofront)
+        onStepState = OnStepState(endState, movetofront)
         driveToPictogramState = DriveToPictogramState(endState, distanceDriver)
         hasStepInFrontCheckerState._hasNoStepInFront = driveToPictogramState
         hasStepInFrontCheckerState._hasStepInFront = onStepState
@@ -39,7 +39,7 @@ class StateMachine:
         onFirstStepState = OnFirstStepState(endState, distanceDriver, movetofront, ObstacleCamera())
         firstClimb = ClimbState(onFirstStepState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
 
-        startState = StartState(scanPictoState, switchStart)
+        startState = StartState(onStepState, switchStart)
         initState = InitState(startState, lift, switchLiftUp, switchLiftDown)
         self._currentState = initState
         # self._currentState = ReadSideSensorState(sensorSideLeft, sensorSideRight)

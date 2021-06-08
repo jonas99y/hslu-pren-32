@@ -30,7 +30,7 @@ def get_position(measuredDistanceLeft:float, measuredDistanceRight:float, obstac
 
     for possibleDistanceAndPosition in possibleDistanceAndPositions:
         if abs(measuredDistanceLeft + measuredDistanceRight + 2*cameraOffset - possibleDistanceAndPosition["length"]) < errorMargin:
-            return possibleDistanceAndPosition["position"] + measuredDistanceLeft + cameraOffset
+            return round(possibleDistanceAndPosition["position"] + measuredDistanceLeft + cameraOffset)
 
     if measuredDistanceLeft > measuredDistanceRight:
         if measuredDistanceRight != 0:

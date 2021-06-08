@@ -8,3 +8,7 @@ class Context:
         self.debug: bool = False
         self.obstacles: List[List[bool]]
         self.currentPosition = 0
+        self.currentStep=0
+
+    def get_current_obstacles(self)-> List[bool]:
+        return self.obstacles[self.currentStep]
