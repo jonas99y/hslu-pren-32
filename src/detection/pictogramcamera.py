@@ -10,7 +10,7 @@ src_dir = Path(__file__).parent
 
 class PictogramCamera:
 
-    def __init__(self, resolutionWidth=720, resolutionHeight=1280):
+    def __init__(self):
         labelPath = str(Path.joinpath(src_dir, "pren2_team32_icons_model_dict.txt"))
         modelPath = str(Path.joinpath(src_dir, "pren2_team32_icons_model.tflite"))
 
@@ -24,8 +24,6 @@ class PictogramCamera:
         self.output_details = self.interpreter.get_output_details()
         self.height = self.input_details[0]['shape'][1]
         self.width = self.input_details[0]['shape'][2]     
-        self._resolutionWidth = resolutionWidth
-        self._resolutionHeight = resolutionHeight   
 
     def detect_pictogram(self)-> Piktogram:
         cropHeight = 240
@@ -42,11 +40,11 @@ class PictogramCamera:
         image = rawCapture.array
 
         # Grab frame from video stream and crop it
-        frame = image[cropHeight:self._resolutionHeight, 0:self._resolutionWidth]
+        frame = image[0:self.height, 0:self.width]
 
         # Resize to expected shape [1xHxWx3]
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame_resized = cv2.resize(frame_rgb, (self.width, self.height))
+        # frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame_resized = cv2.resize(frame, (self.width, self.height))
         input_data = np.expand_dims(frame_resized, axis=0)
 
         # Perform the actual detection by running the model with the image as input
