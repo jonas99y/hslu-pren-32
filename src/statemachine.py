@@ -39,10 +39,10 @@ class StateMachine:
         onFirstStepState = OnFirstStepState(endState, distanceDriver, movetofront, ObstacleCamera())
         firstClimb = ClimbState(onFirstStepState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
 
-        startState = StartState(firstClimb, switchStart)
+        startState = StartState(onFirstStepState, switchStart)
         initState = InitState(startState, lift, switchLiftUp, switchLiftDown)
-        # self._currentState = initState
-        self._currentState = ReadSideSensorState(sensorSideLeft, sensorSideRight)
+        self._currentState = initState
+        # self._currentState = ReadSideSensorState(sensorSideLeft, sensorSideRight)
         self._context = Context()
         self._context.debug = True
         self._context.pictogram = Piktogram.pencile

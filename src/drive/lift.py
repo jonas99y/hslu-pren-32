@@ -22,7 +22,6 @@ class Lift:
         elif sensorstate[SensorData.switchLiftDown]:
             return Lift.fullyRetracted
         else:
-            print("inbetween")
             return Lift.inbetween
 
     # def update_state(self, sensorstate: Dict[str, float]):

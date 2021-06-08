@@ -1,5 +1,6 @@
 from typing import Dict
 from averagedsensor import AveragedSensor
+from getposition import get_position
 from hal.mecanum_driver import Direction, MecanumDriver
 import time
 
@@ -40,18 +41,14 @@ class DistanceDriver:
             sensor = self._sensorRight
         return sensor
 
-    def drive_to_pos(self, left:float, right:float):
+    def drive_to_pos(self, pos:float):
         actualLeft = self._sensorLeft.read()
         actualRight = self._sensorRight.read()
-        if (left-actualLeft) < (right-actualRight):
-            direction = Direction.left
-            distance = actualLeft - left
-        else:
-            direction = Direction.right
-            distance = actualRight - right
-        if direction < 0:
-            raise Exception("distance < 0!!!")
-        self.drive(direction, distance)
+        actualPos = get_position(actualLeft, actualRight, []) #TODO, add obstacles
+        dif = actualPos-pos
+        absDif = abs(actualPos-pos)
+        if absDif > 5:
+            self.drive(Direction.left if dif > 0 else Direction.right, absDif)
 
     def drive_until_distance_reached(self, distance:float, direction:Direction):
         sensor = self._get_sensor_by_direction(direction)
