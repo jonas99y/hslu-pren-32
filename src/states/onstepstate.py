@@ -11,6 +11,7 @@ class OnStepState(State):
 
     def _start(self, context:Context):
         self._moveToFront.start()
+        # TODO save the current position to context somewhere...
         
 
     def _navigate_left_right(self, context:Context):

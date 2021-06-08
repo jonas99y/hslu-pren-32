@@ -6,7 +6,7 @@ from hal.switch import Switch
 
 
 class ClimbState(State):
-    def __init__(self,nextState:State, climb: Climb, switchLeft: Switch, switchRight: Switch, switchLiftUp:Switch, switchLiftDown:Switch):
+    def __init__(self, nextState:State, climb: Climb, switchLeft: Switch, switchRight: Switch, switchLiftUp:Switch, switchLiftDown:Switch):
         super().__init__(nextState)
         self._climb = climb
         self._switchLeft = switchLeft
