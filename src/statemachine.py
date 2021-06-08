@@ -18,7 +18,7 @@ from states.signalpictogramState import SignalPictogramState
 from states.startstate import StartState
 from states.climbstate import ClimbState
 from config.device_config import *
-
+import numpy
 class StateMachine:
     def __init__(self):
         pictoCam = PictogramCamera()
@@ -36,15 +36,17 @@ class StateMachine:
         signalPictoState = SignalPictogramState(driveToStairState,ledDriver)
         scanPictoState = ScanPictogramState(endState, pictoCam)
         # startState = StartState(scanPictoState, switchStart)
-        # onFirstStepState = OnFirstStepState(endState, distanceDriver, movetofront, ObstacleCamera())
-        startState = StartState(scanPictoState, switchStart)
+        onFirstStepState = OnFirstStepState(endState, distanceDriver, movetofront, ObstacleCamera())
+        firstClimb = ClimbState(onFirstStepState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
+
+        startState = StartState(firstClimb, switchStart)
         initState = InitState(startState, lift, switchLiftUp, switchLiftDown)
-        self._currentState = initState
-        # self._currentState = ReadSideSensorState(sensorSideLeft, sensorSideRight)
+        # self._currentState = initState
+        self._currentState = ReadSideSensorState(sensorSideLeft, sensorSideRight)
         self._context = Context()
         self._context.debug = True
         self._context.pictogram = Piktogram.pencile
-
+        self._context.obstacles = numpy.zeros((5,120), dtype=bool).tolist()
 
     def start(self):
         while True:
