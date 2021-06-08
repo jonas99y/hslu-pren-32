@@ -20,19 +20,19 @@ class OnFirstStepState(State):
 
     def _start(self, context: Context) -> "State":
         
-        self._driver.drive_until_distance_reached(7, Direction.left)
+        self._driver.drive_to_pos(0)
         self._update_obstacles_here(context)
+        self._driver.drive_to_pos(30)
 
-        self._driver.drive_until_distance_reached(80, Direction.right)
         self._update_obstacles_here(context)
+        self._driver.drive_to_pos(60)
 
-        self._driver.drive_until_distance_reached(55, Direction.right)
         self._update_obstacles_here(context)   
+        self._driver.drive_to_pos(90)
 
-        self._driver.drive_until_distance_reached(20, Direction.right)
         self._update_obstacles_here(context)  
+        self._driver.drive_to_pos(120)
 
-        self._driver.drive_until_distance_reached(7, Direction.right)
         self._update_obstacles_here(context)  
 
     def _update_obstacles_here(self, context):
