@@ -34,12 +34,12 @@ class StateMachine:
 
         driveToStairState = DriveToStairState(endState, stairFinderCamera, driver)
         signalPictoState = SignalPictogramState(driveToStairState,ledDriver)
-        scanPictoState = ScanPictogramState(endState, pictoCam)
+        scanPictoState = ScanPictogramState(endState, pictoCam, driver)
         # startState = StartState(scanPictoState, switchStart)
         onFirstStepState = OnFirstStepState(endState, distanceDriver, movetofront, ObstacleCamera())
         firstClimb = ClimbState(onFirstStepState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
 
-        startState = StartState(onFirstStepState, switchStart)
+        startState = StartState(scanPictoState, switchStart)
         initState = InitState(startState, lift, switchLiftUp, switchLiftDown)
         self._currentState = initState
         # self._currentState = ReadSideSensorState(sensorSideLeft, sensorSideRight)

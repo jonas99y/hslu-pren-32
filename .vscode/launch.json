@@ -12,10 +12,11 @@
             "console": "integratedTerminal",
         },
         {
-            "name": "Python: Current File",
+            "name": "testcam",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/src/detection/testCamera.py",
+            "cwd": "${workspaceFolder}/src/detection/",
             "console": "integratedTerminal"
         },
         {

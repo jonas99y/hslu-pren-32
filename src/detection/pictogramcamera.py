@@ -2,6 +2,7 @@ from pathlib import Path
 import tensorflow as tf
 import numpy as np
 import cv2
+import datetime
 import time
 from picamera.array import PiRGBArray
 from picamera import PiCamera
@@ -11,6 +12,7 @@ src_dir = Path(__file__).parent
 class PictogramCamera:
 
     def __init__(self):
+        self.count = 0
         labelPath = str(Path.joinpath(src_dir, "pren2_team32_icons_model_dict.txt"))
         modelPath = str(Path.joinpath(src_dir, "pren2_team32_icons_model.tflite"))
 
@@ -26,7 +28,7 @@ class PictogramCamera:
         self.width = self.input_details[0]['shape'][2]     
 
     def detect_pictogram(self)-> Piktogram:
-        cropHeight = 240
+
 
         # Initialize video stream
         camera = PiCamera()
@@ -40,7 +42,8 @@ class PictogramCamera:
         image = rawCapture.array
 
         # Grab frame from video stream and crop it
-        frame = image[0:self.height, 0:self.width]
+        image = cv2.rotate(image, cv2.cv2.ROTATE_90_COUNTERCLOCKWISE)
+        frame = image[720:, :]
 
         # Resize to expected shape [1xHxWx3]
         # frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -74,5 +77,9 @@ class PictogramCamera:
             pictogram = Piktogram.bucket
         elif(icon == "taco"):
             pictogram = Piktogram.taco
-        print(icon)
+
+        timestamp = datetime.datetime.now().strftime('%m-%d-%Y_%H.%M.%S')
+        Path('img').mkdir(parents=True, exist_ok=True)
+        name = f"img/picamera_{timestamp}_{icon}_{score}.png"
+        cv2.imwrite(name,frame)
         return pictogram

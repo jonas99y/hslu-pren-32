@@ -16,6 +16,8 @@ time.sleep(0.1)
 # grab an image from the camera
 camera.capture(rawCapture, format="bgr")
 image = rawCapture.array
+image = cv2.rotate(image, cv2.cv2.ROTATE_90_COUNTERCLOCKWISE)
+image = image[1000:, :]
 # display the image on screen and wait for a keypress
 #cv2.imshow("Image", image)
 #cv2.waitKey(0)
