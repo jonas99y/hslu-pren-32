@@ -1,6 +1,6 @@
 
 from typing import Dict
-from hal.lift_driver import LiftDriver, LiftDirection
+from drive.lift_driver import LiftDriver, LiftDirection
 from sensordata import SensorData
 from sensormonitor import SensorMonitor
 

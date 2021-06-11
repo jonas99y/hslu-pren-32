@@ -6,7 +6,7 @@ from drive.movetofrontofstair import MoveToFrontOfStair
 from getposition import get_position
 from states.context import Context
 from states.state import State
-from hal.mecanum_driver import Direction
+from drive.mecanum_driver import Direction
 
 
 class OnFirstStepState(State):

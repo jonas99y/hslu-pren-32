@@ -1,7 +1,7 @@
 
 from time import sleep
 from detection.pictogramcamera import PictogramCamera
-from hal.mecanum_driver import Direction, MecanumDriver
+from drive.mecanum_driver import Direction, MecanumDriver
 from states.context import Context
 from states.state import State
 

@@ -1,0 +1,19 @@
+@startuml
+hide empty description
+[*] -down-> InitState
+InitState -down-> StartState
+StartState -down-> ScanPictogramState
+ScanPictogramState -down-> SignalPictogramState
+SignalPictogramState -right-> DriveToStairState
+DriveToStairState -up-> ClimbState
+ClimbState -up-> OnFirstStepState : erste Stufe
+OnFirstStepState -up-> OnStepState
+OnStepState -> ClimbState
+
+ClimbState -> HasStepInFrontCheckerState
+HasStepInFrontCheckerState -up-> DriveToPictogramState :keine weiter Stufe in Sicht
+HasStepInFrontCheckerState -> OnStepState : weitere Stufe in Sicht
+DriveToPictogramState -right-> EndState
+EndState -right-> [*]
+
+@enduml

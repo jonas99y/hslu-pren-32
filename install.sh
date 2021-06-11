@@ -7,11 +7,7 @@ eval pip3 install -r hslu-pren-32/src/requirements.txt
 eval sudo apt-get install libatlas-base-dev
 eval sudo apt install python3-tflite-runtime
 
-eval chmod +x hslu-pren-32/run.sh
-eval chmod +x hslu-pren-32/run_web.sh
-eval chmod +x hslu-pren-32/run_remote_server.sh
-eval chmod +x hslu-pren-32/install-rdp.sh
-eval chmod +x hslu-pren-32/install-web.sh
+eval chmod +x hslu-pren-32/run_app.sh
 
 eval sudo raspi-config nonint do_camera 0
 eval echo "Pleas reboot with 'sudo reboot'"

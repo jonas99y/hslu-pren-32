@@ -4,7 +4,7 @@ from time import sleep
 from drive.distancedriver import DistanceDriver
 from hal.distancesensor import DistanceSensor
 from hal.led_driver import Piktogram
-from hal.mecanum_driver import Direction
+from drive.mecanum_driver import Direction
 from states.context import Context
 from states.state import State
 

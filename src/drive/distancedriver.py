@@ -1,7 +1,7 @@
 from typing import Dict
 from averagedsensor import AveragedSensor
 from getposition import get_position
-from hal.mecanum_driver import Direction, MecanumDriver
+from drive.mecanum_driver import Direction, MecanumDriver
 import time
 
 from states.context import Context

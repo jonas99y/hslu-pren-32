@@ -1,0 +1,86 @@
+@startuml
+package HardwareAbstractionLayer{
+
+    class Pin{
+        + pin:int
+    }
+    class Motor{
+        + forward()
+        + backwards()
+        + stop()
+    }
+    Motor --o "2" Pin
+    class Switch{
+        + get_state(): bool
+    }
+    Switch --o "1" Pin
+    class Pwm{
+        + get_speed(): int
+        + set_speed(int)
+    }
+    Pwm --o "1" Pin
+    class DistanceSensor{
+        +measure():float
+    }
+    DistanceSensor --o "2" Pin
+}
+
+' package Detection{
+'     class PictogramCamera{
+'         + detect_pictogram(): Pictogram
+'     }
+'     class ObstacleCamera{
+'         + get_obstacles(...): int[][]
+'     }
+'     enum Pictogram{
+'         none
+'         hammer
+'         taco
+'         ruler
+'         bucket
+'         pencile
+'     }
+' }
+package Drive{
+
+    class MecanumDriver{
+        +drive(Direction)
+        +rotate(Direction)
+        +stop()
+        +set_speed()
+        +change_speed(int)
+    }
+    MecanumDriver --o "4" Motor
+    MecanumDriver --o "1" Pwm
+    MecanumDriver -- Direction
+    MecanumDriver --o DistanceSensor
+    enum Direction{
+        stop
+        forward
+        right
+        backward
+        left
+    }
+
+    class LiftDriver{
+        + drive(Direction)
+        + stop()
+        + change_speed(int)
+    }
+    LiftDriver -- Direction
+    LiftDriver --o Motor
+    LiftDriver --o Pwm
+    class Lift{
+        + climb()
+        + retract()
+        + stop()
+    }
+    Lift --o LiftDriver
+    Lift --o "2" Switch
+    class Climb{
+        + start()
+    }
+    Climb --o Lift
+    Climb --o MecanumDriver
+}
+@enduml

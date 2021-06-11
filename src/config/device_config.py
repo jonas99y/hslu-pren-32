@@ -2,24 +2,21 @@
 from pathlib import Path
 
 from Bluetin_Echo.Bluetin_Echo import Echo
-from averagedsensor import AveragedSensor
 from drive.distancedriver import DistanceDriver
 from drive.lift import Lift
 from drive.movetofrontofstair import MoveToFrontOfStair
-from hal.distancesensor import DistanceSensor
+
 from hal.led import Led
 from hal.led_driver import LedDriver
-from hal.mecanum_driver import MecanumDriver
+from drive.mecanum_driver import MecanumDriver
 from hal.motor import Motor
 from hal.pwm import Pwm
-from hal.lift_driver import LiftDriver
+from drive.lift_driver import LiftDriver
 from config.pins import *
 import RPi.GPIO as GPIO
 
 from hal.switch import Switch
-from sensor import Sensor
 from sensordata import SensorData
-from sensormonitor import SensorMonitor
 GPIO.setmode(GPIO.BCM)
 
 lf = Motor(MOTOR_FRONT_LEFT_PLUS, MOTOR_FRONT_LEFT_MINUS)
@@ -41,15 +38,6 @@ switchFrontRight = Switch(SWITCH_FRONT_RIGHT)
 switchLiftUp = Switch(SWITCH_LIFT_UP)
 switchLiftDown = Switch(SWITCH_LIFT_DOWN)
 switchStart = Switch(SWITCH_START)
-# sensorFrontLeft = DistanceSensor(SENSOR_TIGGER, SENSOR_FRONT_LEFT)
-# sensorFrontRight = DistanceSensor(SENSOR_TIGGER, SENSOR_FRONT_RIGHT)
-# sensorSideLeft = DistanceSensor(SENSOR_TIGGER, SENSOR_SIDE_LEFT)
-# sensorSideRight = DistanceSensor(SENSOR_TIGGER, SENSOR_SIDE_RIGHT)
-
-# sensorFrontLeft = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_FRONT_LEFT))
-# sensorFrontRight = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_FRONT_RIGHT))
-# sensorSideLeft = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_SIDE_LEFT))
-# sensorSideRight = AveragedSensor(Echo(SENSOR_TIGGER, SENSOR_SIDE_RIGHT))
 
 sensorFrontLeft =Echo(SENSOR_TIGGER, SENSOR_FRONT_LEFT)
 sensorFrontRight = Echo(SENSOR_TIGGER, SENSOR_FRONT_RIGHT)
@@ -65,9 +53,3 @@ ledDriver = LedDriver(ledA, ledB, ledC)
 
 lift = Lift(liftDriver)
 sensorData = SensorData(Path(__file__).parent.parent/'sensor')
-sensor = Sensor(
-    sensorData,
-    switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown,
-    sensorFrontLeft, sensorFrontRight, sensorSideLeft, sensorSideRight,
-    switchStart
-)

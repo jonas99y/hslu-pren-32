@@ -1,6 +1,6 @@
 from time import sleep
 from hal.distancesensor import DistanceSensor
-from hal.mecanum_driver import Direction, MecanumDriver
+from drive.mecanum_driver import Direction, MecanumDriver
 from hal.switch import Switch
 from hal.motor import Motor
 from hal.pwm import Pwm

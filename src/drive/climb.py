@@ -1,9 +1,7 @@
 
 from typing import Dict
 from drive.lift import Lift
-from sensormonitor import SensorMonitor
-from hal.mecanum_driver import MecanumDriver, Direction
-from sensordata import SensorData
+from drive.mecanum_driver import MecanumDriver, Direction
 import time
 
 MOVE_FORWARD_TIMESPAN =0.9 
