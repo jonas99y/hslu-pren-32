@@ -2,7 +2,6 @@
 from typing import Dict
 from drive.lift_driver import LiftDriver, LiftDirection
 from sensordata import SensorData
-from sensormonitor import SensorMonitor
 
 
 class Lift:
