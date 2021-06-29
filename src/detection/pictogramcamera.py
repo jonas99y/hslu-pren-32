@@ -28,7 +28,7 @@ class PictogramCamera:
         self.width = self.input_details[0]['shape'][2]     
 
     def detect_pictogram(self)-> Piktogram:
-
+        #todo inject camera object
 
         # Initialize video stream
         camera = PiCamera()
@@ -39,6 +39,7 @@ class PictogramCamera:
 
         # grab an image from the camera
         camera.capture(rawCapture, format="bgr")
+        camera.close()
         image = rawCapture.array
 
         # Grab frame from video stream and crop it
@@ -63,7 +64,8 @@ class PictogramCamera:
                 score = output_data[i]
                 labelIndex = i
         icon = self.labels[labelIndex]
-        if(score < 80):
+        print(output_data)
+        if(score < 150):
             icon = ""
             
         pictogram = Piktogram.none
