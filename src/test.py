@@ -11,3 +11,6 @@ from drive.mecanum_driver import Direction
 
 distanceDriver.drive(Direction.left, 80)
 # %%
+from config.device_config import movetofront
+movetofront.start()
+# %%

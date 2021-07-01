@@ -29,6 +29,8 @@ class MecanumDriver():
             self._rf.forward()
             self._rb.forward()
             print("Driving forward")
+            print("test forward")
+            
         elif direction == Direction.backward:
             self._lf.backwards()
             self._lb.backwards()

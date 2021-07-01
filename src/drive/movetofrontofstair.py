@@ -6,8 +6,8 @@ from hal.motor import Motor
 from hal.pwm import Pwm
 
 SPEED = 20
-TARGET_DISTANCE = 4.6
-THRESHOLD = 0.4
+TARGET_DISTANCE = 4
+THRESHOLD = 1
 
 
 class MoveToFrontOfStair:
@@ -34,7 +34,9 @@ class MoveToFrontOfStair:
         distanceLeft = self._sensorLeft.read()
         sleep(0.1)
         distanceRight = self._sensorRight.read()
-
+        print(f"left: {distanceLeft}")
+        print(f"right: {distanceRight}")
+        print("teststt")
         leftCloseToTarget = self._distance_close_to_target(distanceLeft)
         rightCloseToTarget = self._distance_close_to_target(distanceRight)
 

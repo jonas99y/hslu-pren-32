@@ -68,12 +68,9 @@ class OnFirstStepState(State):
                 lastEntry = entry
 
             if i+1 - lastObstacle <35:
-                for y in range(lastObstacle, i):
+                for y in range(lastObstacle, i+1):
                             l[y] = True
     
 
     def _get_pos(self, context:Context):
-        l = self._sensorLeft.read()
-        sleep(0.1)
-        r = self._sensorRight.read()
-        return get_position(l,r,context)
+        return get_position(self._sensorLeft,self._sensorRight,context)

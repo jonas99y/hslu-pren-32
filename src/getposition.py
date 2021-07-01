@@ -1,15 +1,17 @@
 
+from time import sleep
 from typing import Dict, List
 
 from states.context import Context
-
-def get_position(measuredDistanceLeft:float, measuredDistanceRight:float, context:Context):
+from Bluetin_Echo.Bluetin_Echo import Echo
+def get_position(sensorLeft:Echo, sensorRitgh:Echo, context:Context):
+    print("start get_pos")
     stairWidth = 136
     cameraOffset = 11.5
     errorMargin = 10
 
     sectors = get_free_sectors(context.get_current_obstacles())
-
+    measuredDistanceLeft, measuredDistanceRight = measure_distances(sensorLeft, sensorRitgh)
     possibleSectors = [] # start postions of sectors
     for position, length in sectors.items():
         if abs(measuredDistanceLeft + measuredDistanceRight + 2*cameraOffset - length) < errorMargin:
@@ -35,6 +37,24 @@ def get_position(measuredDistanceLeft:float, measuredDistanceRight:float, contex
         return round(min(measuredDistanceLeft + cameraOffset, stairWidth - cameraOffset))
 
     return 0
+
+def measure_distances(sensorLeft:Echo, sensorRitgh:Echo):
+    for i in range(0,5):
+        l = sensorLeft.read()
+        print(f"l: {l}")
+        sleep(0.1 + i*0.1)
+        if l > 0 and l < 150:
+            break
+
+    for i in range(0,5):
+        r = sensorRitgh.read()
+        print(f"r: {r}")
+        sleep(0.1 + i*0.1)
+        if r > 0 and r < 150:
+            break
+
+    sleep(0.1)
+    return l, r
 
 def get_free_sectors(obstaclesOfCurrentStep:List)-> Dict[int,int]:
     matrixSize = len(obstaclesOfCurrentStep)

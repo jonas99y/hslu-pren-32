@@ -19,12 +19,13 @@ class OnStepState(State):
 
 
     def _start(self, context:Context):
+        print("--------------------------------------------------------------------------------------------------------------")
+        print("\n\n\n\n")
+        print("--------------------------------------------------------------------------------------------------------------")
         print("OnStepState start()")
-        l = self._sensorLeft.read()
-        sleep(0.1)
-        r = self._sensorRight.read()
-        currentPosition = get_position(l, r, context)
-        print(f"Current postion: {currentPosition} base on {l} and {r}.")
+
+        currentPosition = get_position(self._sensorLeft,self._sensorRight,context)
+        print(f"Current calculated postion: {currentPosition}.")
         print(f"Current step is {context.currentStep}")
         grid = Grid(matrix=context.obstacles, inverse=True)
         start = grid.node(currentPosition, context.currentStep)
@@ -32,7 +33,6 @@ class OnStepState(State):
         finder = DijkstraFinder(diagonal_movement=DiagonalMovement.never)
         path, runs = finder.find_path(start, end, grid)
         print(grid.grid_str(path=path, start=start, end=end))
-        print(path)
 
         for p in path:
             if p[1] == context.currentStep+1:

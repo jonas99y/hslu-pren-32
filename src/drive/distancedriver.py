@@ -44,12 +44,10 @@ class DistanceDriver:
         return sensor
 
     def drive_to_pos(self, pos:float, context:Context):
-        actualLeft = self._sensorLeft.read()
-        time.sleep(0.1)
-        actualRight = self._sensorRight.read()
-        actualPos = get_position(actualLeft, actualRight, context)
+        
+        actualPos = get_position(self._sensorLeft, self._sensorRight, context)
         print(f"DistanceDriver: actualPos: {actualPos}")
-        print(f"DistanceDriver: actualPos: {actualPos}")
+
         dif = actualPos-pos
         print(f"DistanceDriver: dif: {dif}")
         absDif = abs(actualPos-pos)
