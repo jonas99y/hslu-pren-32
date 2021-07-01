@@ -25,7 +25,7 @@ class ObstacleCamera:
 
     def __init__(self, camera:PiCamera):
         labelPath = str(Path.joinpath(src_dir, "obstacle_detection_labels.txt"))
-        modelPath = str(Path.joinpath(src_dir, "pren2_team32_obstacles_model.tflite"))
+        modelPath = str(Path.joinpath(src_dir, "pren2_team32_obstacles_model_2.tflite"))
         
         with open(labelPath, 'r') as f:
             self.labels = [line.strip() for line in f.readlines()]
