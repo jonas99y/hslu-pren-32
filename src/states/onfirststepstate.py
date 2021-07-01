@@ -19,20 +19,41 @@ class OnFirstStepState(State):
         self._sensorRight = distanceDriver._sensorRight
 
     def _start(self, context: Context) -> "State":
-        vals = [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140]
+        vals = [0,20,30,40,50,60,70,80,90,100,110,120]
         for v in vals:
             self._driver.drive_to_pos(v, context)
             self._update_obstacles_here(context)
+        self._fix_the_matrix(context)
 
 
     def _update_obstacles_here(self, context:Context):
         sleep(0.5)
         position = self._get_pos(context)
-        print(position)
-        for i,l in enumerate(context.obstacles):
-            print(f"---\n{i}")
-            print(l)
-        context.obstacles = self._obstacleCamera.get_obstacles(context.obstacles, position ,0)
+
+        
+        context.obstacles = self._obstacleCamera.get_obstacles(context.obstacles, context.currentStep ,position)
+
+
+    def _fix_the_matrix(self, context:Context):
+        m = context.obstacles
+        for l in m:
+            lastObstacle = 0
+            lastEntry = True
+            for i, entry in enumerate(l):
+                if not entry:
+                    if lastEntry:
+                        lastObstacle = max(0,i-1)
+                else:
+                    if i - lastObstacle < 35:
+                        for y in range(lastObstacle, i):
+                            l[y] = True
+    
+                lastEntry = entry
+
+            if i+1 - lastObstacle <35:
+                for y in range(lastObstacle, i):
+                            l[y] = True
+    
 
     def _get_pos(self, context:Context):
         l = self._sensorLeft.read()

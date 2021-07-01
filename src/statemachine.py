@@ -29,13 +29,13 @@ class StateMachine:
         endState = EndState(camera, switchStart)
         climb = Climb(lift, driver)
         hasStepInFrontCheckerState = HasStepInFrontCheckerState(None, None, sensorFrontLeft, sensorSideRight)
-        climbstate = ClimbState(endState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
+        climbstate = ClimbState(hasStepInFrontCheckerState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
         onStepState = OnStepState(climbstate, movetofront, distanceDriver)
         driveToPictogramState = DriveToPictogramState(endState, distanceDriver)
         hasStepInFrontCheckerState._hasNoStepInFront = driveToPictogramState
         hasStepInFrontCheckerState._hasStepInFront = onStepState
 
-        onFirstStepState = OnFirstStepState(endState, distanceDriver, movetofront, obstacelCam)
+        onFirstStepState = OnFirstStepState(onStepState, distanceDriver, movetofront, obstacelCam)
         firstClimb = ClimbState(onFirstStepState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
         driveToStairState = DriveToStairState(firstClimb, driver, sensorFrontLeft, sensorFrontRight, switchFrontLeft, switchFrontRight)
         signalPictoState = SignalPictogramState(driveToStairState,ledDriver)
@@ -53,10 +53,6 @@ class StateMachine:
         self._context.pictogram = Piktogram.pencile
         self._context.obstacles = numpy.zeros((6,136), dtype=bool).tolist()
 
-        for i in range(46, 59):
-            self._context.obstacles[1][i] = True
-        for i in range(98, 124):
-            self._context.obstacles[2][i] = True
 
 
     def start(self):

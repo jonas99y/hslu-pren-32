@@ -7,8 +7,8 @@ from drive.distancedriver import DistanceDriver
 from getposition import get_free_sectors, get_position
 from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
-from pathfinding.finder.a_star import AStarFinder
-
+from pathfinding.finder.dijkstra import DijkstraFinder
+import sys
 class OnStepState(State):
     def __init__(self, nextState: State, moveToFront:MoveToFrontOfStair, distanceDriver:DistanceDriver):
         self._moveToFront = moveToFront
@@ -29,10 +29,11 @@ class OnStepState(State):
         grid = Grid(matrix=context.obstacles, inverse=True)
         start = grid.node(currentPosition, context.currentStep)
         end = grid.node(70, 5)
-        finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
+        finder = DijkstraFinder(diagonal_movement=DiagonalMovement.never)
         path, runs = finder.find_path(start, end, grid)
         print(grid.grid_str(path=path, start=start, end=end))
         print(path)
+
         for p in path:
             if p[1] == context.currentStep+1:
                 targetPosOnNextStep = p[0]
@@ -48,6 +49,10 @@ class OnStepState(State):
         if not target:    
             raise Exception("mama mia!")
         print(f"Driving to position: {target}")
+        self._driver.drive_to_pos(target, context)
+        self._driver.drive_to_pos(target, context)
+        self._driver.drive_to_pos(target, context)
+        self._driver.drive_to_pos(target, context)
         self._driver.drive_to_pos(target, context)
         self._moveToFront.start()
         return

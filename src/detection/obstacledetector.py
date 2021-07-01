@@ -74,8 +74,6 @@ def detectObstacles(matrix, position):
             xmin = float(max(0,(boxes[i][1])))
             ymax = float(min(1,(boxes[i][2])))
             xmax = float(min(1,(boxes[i][3])))
-            print(boxes[i])
-            print(f"{ymin}, {xmin}, {ymax}, {xmax}")
             # check 2nd step
             if (ymin > 0.53):
                 if(xmin < 0.33):
@@ -127,7 +125,7 @@ def main():
     ]
 
     detectObstacles(matrix=matrix, position=0)
-    print(matrix)
+
 
 
 if __name__ == '__main__':
