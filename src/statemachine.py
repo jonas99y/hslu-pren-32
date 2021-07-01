@@ -1,3 +1,4 @@
+from picamera.camera import PiCamera
 from detection.obstaclecamera import ObstacleCamera
 from detection.pictogramcamera import PictogramCamera
 from detection.stairfindercamera import StairFinderCamera
@@ -21,9 +22,11 @@ from config.device_config import *
 import numpy
 class StateMachine:
     def __init__(self):
-        pictoCam = PictogramCamera()
-        stairFinderCamera = StairFinderCamera()
-        endState = EndState()
+        camera = PiCamera()
+        pictoCam = PictogramCamera(camera)
+        obstacelCam = ObstacleCamera(camera)
+        # stairFinderCamera = StairFinderCamera()
+        endState = EndState(camera, switchStart)
         climb = Climb(lift, driver)
         hasStepInFrontCheckerState = HasStepInFrontCheckerState(None, None, sensorFrontLeft, sensorSideRight)
         climbstate = ClimbState(endState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
@@ -32,19 +35,20 @@ class StateMachine:
         hasStepInFrontCheckerState._hasNoStepInFront = driveToPictogramState
         hasStepInFrontCheckerState._hasStepInFront = onStepState
 
-        driveToStairState = DriveToStairState(endState, stairFinderCamera, driver)
+        onFirstStepState = OnFirstStepState(endState, distanceDriver, movetofront, obstacelCam)
+        firstClimb = ClimbState(onFirstStepState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
+        driveToStairState = DriveToStairState(firstClimb, driver, sensorFrontLeft, sensorFrontRight, switchFrontLeft, switchFrontRight)
         signalPictoState = SignalPictogramState(driveToStairState,ledDriver)
-        scanPictoState = ScanPictogramState(endState, pictoCam, driver)
+        scanPictoState = ScanPictogramState(signalPictoState, pictoCam, driver)
         # startState = StartState(scanPictoState, switchStart)
-        # onFirstStepState = OnFirstStepState(endState, distanceDriver, movetofront, ObstacleCamera())
-        # firstClimb = ClimbState(onFirstStepState, climb, switchFrontLeft, switchFrontRight, switchLiftUp, switchLiftDown)
 
-        startState = StartState(scanPictoState, switchStart)
-        initState = InitState(startState, lift, switchLiftUp, switchLiftDown)
+        startState = StartState(onFirstStepState, switchStart)
+        initState = InitState(startState, lift, switchLiftUp, switchLiftDown, ledDriver)
+        endState._nextState = initState
         self._currentState = initState
         # self._currentState = ReadSideSensorState(sensorSideLeft, sensorSideRight)
         self._context = Context()
-        self._context.debug = True
+        self._context.debug = False
         self._context.currentStep = 0
         self._context.pictogram = Piktogram.pencile
         self._context.obstacles = numpy.zeros((6,136), dtype=bool).tolist()

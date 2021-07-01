@@ -11,7 +11,7 @@ src_dir = Path(__file__).parent
 
 class PictogramCamera:
 
-    def __init__(self):
+    def __init__(self,camera:PiCamera):
         self.count = 0
         labelPath = str(Path.joinpath(src_dir, "pren2_team32_icons_model_dict.txt"))
         modelPath = str(Path.joinpath(src_dir, "pren2_team32_icons_model.tflite"))
@@ -26,20 +26,14 @@ class PictogramCamera:
         self.output_details = self.interpreter.get_output_details()
         self.height = self.input_details[0]['shape'][1]
         self.width = self.input_details[0]['shape'][2]     
+        self.camera = camera
 
     def detect_pictogram(self)-> Piktogram:
-        #todo inject camera object
-
-        # Initialize video stream
-        camera = PiCamera()
-        rawCapture = PiRGBArray(camera)
-
-        # allow the camera to warmup
-        time.sleep(1.5)
+        rawCapture = PiRGBArray(self.camera)
 
         # grab an image from the camera
-        camera.capture(rawCapture, format="bgr")
-        camera.close()
+        self.camera.capture(rawCapture, format="bgr")
+
         image = rawCapture.array
 
         # Grab frame from video stream and crop it
@@ -79,7 +73,7 @@ class PictogramCamera:
             pictogram = Piktogram.bucket
         elif(icon == "taco"):
             pictogram = Piktogram.taco
-
+        print(icon)
         timestamp = datetime.datetime.now().strftime('%m-%d-%Y_%H.%M.%S')
         Path('img').mkdir(parents=True, exist_ok=True)
         name = f"img/picamera_{timestamp}_{icon}_{score}.png"

@@ -5,7 +5,7 @@ from drive.mecanum_driver import Direction, MecanumDriver
 from states.context import Context
 from states.state import State
 
-ROTATE_DURATION = 1
+ROTATE_DURATION = 0.2
 
 class ScanPictogramState(State):
     def __init__(self, nextState: State, cam: PictogramCamera, mecanumDriver:MecanumDriver):
@@ -38,4 +38,4 @@ class ScanPictogramState(State):
             self._driver.rotate(Direction.right)
             sleep(ROTATE_DURATION)
             self._driver.stop()
-            sleep(0.2)
+            sleep(0.5)

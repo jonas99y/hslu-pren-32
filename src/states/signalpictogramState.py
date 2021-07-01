@@ -10,5 +10,4 @@ class SignalPictogramState(State):
 
     def _start(self, context: Context) -> "State":
         self._ledDriver.ledSet(context.pictogram)
-        return 
        

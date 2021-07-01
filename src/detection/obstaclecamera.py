@@ -1,4 +1,5 @@
 
+import datetime
 from typing import List
 import tensorflow as tf
 import numpy as np
@@ -22,7 +23,7 @@ class ObstacleCamera:
     x_offset_3rd_step = 12
     x_offset_4th_step = 15
 
-    def __init__(self):
+    def __init__(self, camera:PiCamera):
         labelPath = str(Path.joinpath(src_dir, "obstacle_detection_labels.txt"))
         modelPath = str(Path.joinpath(src_dir, "pren2_team32_obstacles_model.tflite"))
         
@@ -39,17 +40,12 @@ class ObstacleCamera:
         self.width = self.input_details[0]['shape'][2]
 
         self.min_conf_threshold = 0.5
+        self.camera = camera
 
     def get_obstacles(self, currentMatrix: List[List[bool]], step:int, position:int)-> List[List[bool]]:
-        # initialize the camera and grab a reference to the raw camera capture
-        camera = PiCamera()
-        rawCapture = PiRGBArray(camera)
-
-        # allow the camera to warmup
-        time.sleep(1.5)
-
+        rawCapture = PiRGBArray(self.camera)
         # grab an image from the camera
-        camera.capture(rawCapture, format="bgr")
+        self.camera.capture(rawCapture, format="bgr")
         image = rawCapture.array
 
         image = cv2.rotate(image, cv2.cv2.ROTATE_90_COUNTERCLOCKWISE)
@@ -98,6 +94,10 @@ class ObstacleCamera:
                     xmax_cm = int(xmax * self.cm_per_pixel_1st_step) - self.x_offset_1st_step + position
                     currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=2-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
 
+        self._draw(scores, boxes, imW, imH, self.labels, classes, image, 0.2 )
+
+
+
         return currentMatrix
 
     def __update_matrix(self, currentMatrix: List[List[bool]], y_offset:int, xmin_cm:int, xmax_cm:int)->List[List[bool]]:
@@ -109,3 +109,33 @@ class ObstacleCamera:
             currentMatrix[y][x] = True
 
         return currentMatrix
+
+
+    def _draw(self, scores, boxes, imW, imH, labels, classes, image, min_conf_threshold):
+        for i in range(len(scores)):
+            if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
+
+                # Get bounding box coordinates and draw box
+                # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
+                ymin = int(max(1,(boxes[i][0] * imH)))
+                xmin = int(max(1,(boxes[i][1] * imW)))
+                ymax = int(min(imH,(boxes[i][2] * imH)))
+                xmax = int(min(imW,(boxes[i][3] * imW)))
+
+                cv2.rectangle(image, (xmin,ymin), (xmax,ymax), (10, 255, 0), 2)
+
+                # Draw label
+                object_name = labels[int(classes[i])] # Look up object name from "labels" array using class index
+                label = '%s: %d%%' % (object_name, int(scores[i]*100)) # Example: 'person: 72%'
+                labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) # Get font size
+                label_ymin = max(ymin, labelSize[1] + 10) # Make sure not to draw label too close to top of window
+                cv2.rectangle(image, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
+                cv2.putText(image, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
+
+        # All the results have been drawn on the image, now display the image
+        # cv2.imshow('Object detector', image)
+
+        timestamp = datetime.datetime.now().strftime('%m-%d-%Y_%H.%M.%S')
+        Path('img/obstacles').mkdir(parents=True, exist_ok=True)
+        name = f"img/obstacles/picamera_{timestamp}_.png"
+        cv2.imwrite(name,image)
