@@ -71,7 +71,7 @@ class ObstacleCamera:
                 xmin = int(max(1,(boxes[i][1] * imW)))
                 ymax = int(min(imH,(boxes[i][2] * imH)))
                 xmax = int(min(imW,(boxes[i][3] * imW)))
-                
+                yAvg = (ymin+ymax)/2
                 # map positions to matrix
                 # check 1st step
                 if(ymax > 690):
@@ -81,13 +81,13 @@ class ObstacleCamera:
                     print(f"1st step: xmin: {xmin}, xmax: {xmax}, position: {position}")
                     print(f"1st step: xmin_cm: {xmin_cm}, xmax_cm: {xmax_cm}")
                 # check 2nd step
-                elif(ymin < 614 and ymax > 384):
+                elif(yAvg < 580 and yAvg > 400):
                     xmin_cm = int(xmin * self.cm_per_pixel_2nd_step) - self.x_offset_2nd_step + position
                     xmax_cm = int(xmax * self.cm_per_pixel_2nd_step) - self.x_offset_2nd_step + position
                     currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=4-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
                     print(f"2nd step: xmin: {xmin_cm}, xmax: {xmax_cm}")
                 # check 3rd step
-                elif(ymin < 320 and ymax > 217):
+                elif(yAvg < 350 and yAvg > 250):
                     xmin_cm = int(xmin * self.cm_per_pixel_3rd_step) - self.x_offset_3rd_step + position
                     xmax_cm = int(xmax * self.cm_per_pixel_3rd_step) - self.x_offset_3rd_step + position
                     currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=3-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
