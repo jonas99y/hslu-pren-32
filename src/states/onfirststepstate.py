@@ -1,5 +1,9 @@
 
 from time import sleep
+from pathfinding.core.diagonal_movement import DiagonalMovement
+
+from pathfinding.core.grid import Grid
+from pathfinding.finder.dijkstra import DijkstraFinder
 from detection.obstaclecamera import ObstacleCamera
 from drive.distancedriver import DistanceDriver
 from drive.movetofrontofstair import MoveToFrontOfStair
@@ -22,8 +26,21 @@ class OnFirstStepState(State):
         vals = [0,20,30,40,50,60,70,80,90,100,110,120]
         for v in vals:
             self._driver.drive_to_pos(v, context)
+            self.print_path_und_so(context)
             self._update_obstacles_here(context)
+        self.print_path_und_so(context)
         self._fix_the_matrix(context)
+        self.print_path_und_so(context)
+
+
+    def print_path_und_so(self, context:Context):
+        grid = Grid(matrix=context.obstacles, inverse=True)
+        start = grid.node(0, context.currentStep)
+        end = grid.node(70, 5)
+        finder = DijkstraFinder(diagonal_movement=DiagonalMovement.never)
+        path, runs = finder.find_path(start, end, grid)
+        print(grid.grid_str(path=path, start=start, end=end))
+        print(path)
 
 
     def _update_obstacles_here(self, context:Context):
