@@ -74,24 +74,24 @@ class ObstacleCamera:
                 
                 # map positions to matrix
                 # check 1st step
-                if(ymax > 660):
+                if(ymax > 690):
                     xmin_cm = int(xmin * self.cm_per_pixel_1st_step) - self.x_offset_1st_step + position
                     xmax_cm = int(xmax * self.cm_per_pixel_1st_step) - self.x_offset_1st_step + position
                     currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=5-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
                 # check 2nd step
-                elif(ymin < 575 and ymax > 330):
-                    xmin_cm = int(xmin * self.cm_per_pixel_2st_step) - self.x_offset_2st_step + position
-                    xmax_cm = int(xmax * self.cm_per_pixel_2st_step) - self.x_offset_2st_step + position
+                elif(ymin < 614 and ymax > 384):
+                    xmin_cm = int(xmin * self.cm_per_pixel_2nd_step) - self.x_offset_2nd_step + position
+                    xmax_cm = int(xmax * self.cm_per_pixel_2nd_step) - self.x_offset_2nd_step + position
                     currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=4-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
                 # check 3rd step
-                elif(ymin < 265 and ymax > 185):
-                    xmin_cm = int(xmin * self.cm_per_pixel_3st_step) - self.x_offset_3st_step + position
-                    xmax_cm = int(xmax * self.cm_per_pixel_3st_step) - self.x_offset_3st_step + position
+                elif(ymin < 320 and ymax > 217):
+                    xmin_cm = int(xmin * self.cm_per_pixel_3rd_step) - self.x_offset_3rd_step + position
+                    xmax_cm = int(xmax * self.cm_per_pixel_3rd_step) - self.x_offset_3rd_step + position
                     currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=3-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
                 # check 4th step
-                elif(ymin < 125 ):
-                    xmin_cm = int(xmin * self.cm_per_pixel_4st_step) - self.x_offset_4st_step + position
-                    xmax_cm = int(xmax * self.cm_per_pixel_4st_step) - self.x_offset_4st_step + position
+                elif(ymin < 180):
+                    xmin_cm = int(xmin * self.cm_per_pixel_4th_step) - self.x_offset_4th_step + position
+                    xmax_cm = int(xmax * self.cm_per_pixel_4th_step) - self.x_offset_4th_step + position
                     currentMatrix = self.__update_matrix(currentMatrix=currentMatrix, y_offset=2-step, xmin_cm=xmin_cm, xmax_cm=xmax_cm)
 
         self._draw(scores, boxes, imW, imH, self.labels, classes, image, 0.2 )
