@@ -42,7 +42,7 @@ class StateMachine:
         scanPictoState = ScanPictogramState(signalPictoState, pictoCam, driver)
         # startState = StartState(scanPictoState, switchStart)
 
-        startState = StartState(onFirstStepState, switchStart)
+        startState = StartState(scanPictoState, switchStart)
         initState = InitState(startState, lift, switchLiftUp, switchLiftDown, ledDriver)
         endState._nextState = initState
         self._currentState = initState
@@ -50,7 +50,7 @@ class StateMachine:
         self._context = Context()
         self._context.debug = False
         self._context.currentStep = 0
-        self._context.pictogram = Piktogram.pencile
+        self._context.pictogram = Piktogram.bucket
         self._context.obstacles = numpy.zeros((6,136), dtype=bool).tolist()
 
 

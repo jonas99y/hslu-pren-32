@@ -23,6 +23,7 @@ class OnFirstStepState(State):
         self._sensorRight = distanceDriver._sensorRight
 
     def _start(self, context: Context) -> "State":
+        context.currentStep = 0
         vals = [0,20,30,40,50,60,70,80,90,100,110,120]
         for v in vals:
             self._driver.drive_to_pos(v, context)
